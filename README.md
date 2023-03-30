@@ -2,7 +2,7 @@
 
 ## [👀 Live-Server](https://.netlify.app)
 
-<img src="./preview.png" alt="">
+<img src="./cinemabooking(social_preview).png" alt="">
 
 ---
 
