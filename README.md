@@ -4,6 +4,7 @@
 
 
 <img src="./cinemabooking(social_preview).png" alt="">
+<img src="./preview.png" alt="">
 
 ---
 
