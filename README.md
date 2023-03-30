@@ -1,6 +1,6 @@
 # Read Me
 
-## [👀 Live-Server](https://cinemabooking.netlify.app)
+## [👀 Live-Server](https://cinemabookin.netlify.app/)
 
 
 <img src="./cinemabooking(social_preview).png" alt="">
