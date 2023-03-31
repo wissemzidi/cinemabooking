@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+html[color-theme="dark"] body {
+  background-image: linear-gradient(
+    -110deg,
+    rgba(255, 0, 0, 0.405),
+    rgba(255, 0, 0, 0.15),
+    rgba(0, 0, 0, 1) 40%
+  );
+}
+
+html[color-theme="light"] body {
+  background-image: linear-gradient(
+    -110deg,
+    rgba(255, 0, 0, 0.405),
+    rgba(240, 173, 173, 0.15),
+    rgb(255, 255, 255) 40%
+  );
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background-image: linear-gradient(
+    -110deg,
+    rgba(255, 0, 0, 0.405),
+    rgba(255, 0, 0, 0.15),
+    rgba(0, 0, 0, 1) 40%
+  );
+}
+
+header {
+  padding: 1rem;
+  max-width: 90rem;
+  margin-inline: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header > * {
+  display: flex;
+  gap: 0.5rem;
+}
+
+header nav {
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 1rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 9999px;
+}
+
+header button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  filter: grayscale(100%);
+  transition: filter 0.2s ease-out;
+}
+
+header button:hover {
+  filter: grayscale(0);
+}
+
+#search-box {
+  opacity: 0;
+  width: 40vw;
+  /* max-width: 15rem; */
+  max-width: 0;
+  padding: 0.35rem 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 99px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  outline: none;
+  transition: padding 0.2s ease-out;
+}
+
+#search-box:not([hidden]) {
+  animation: show-search-box 0.4s ease-out forwards;
+  padding: 0.35rem 0.7rem;
+}
+
+#search-box[closing] {
+  animation: hide-search-box 0.4s ease-out forwards;
+  padding: 0;
+}
+
+@keyframes show-search-box {
+  from {
+    opacity: 0;
+    max-width: 0;
+  }
+  to {
+    opacity: 1;
+    max-width: 15rem;
+  }
+}
+
+@keyframes hide-search-box {
+  from {
+    opacity: 1;
+    max-width: 15rem;
+  }
+  to {
+    opacity: 0;
+    max-width: 0;
+  }
+}
+
+main {
+  max-width: 90rem;
+  margin-inline: auto;
+}

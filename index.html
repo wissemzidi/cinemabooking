@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<script src="./theme.js"></script>
+
+<style>
+  html[data-theme="dark"] {
+    background-color: #000;
+    color: #EEE;
+  }
+
+  html[data-theme="light"] {
+    background-color: #EEE;
+    color: #000;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./home/main.js" defer></script>
+  <link rel="stylesheet" href="./home/style.css">
+  <title>cinema booking</title>
+</head>
+
+<body>
+
+  <header>
+    <div>
+      <a href="#">
+        <img width="40" src="./icons/logo(dark).png" title="cinema booking" alt="">
+      </a>
+      <h1>Cinema Booking</h1>
+    </div>
+    <nav id="header-nav">
+      <button>
+        <img id="search-btn" width="25" src="./icons/search.png" alt="search">
+      </button>
+      <input id="search-box" type="text" hidden disabled>
+      <button>
+        <img width="25" src="./icons/top.png" alt="">
+      </button>
+      <button>
+        <img width="25" src="./icons/account.png" alt="account">
+      </button>
+      <button>
+        <img width="25" onclick="changeTheme()" src="./icons/theme.png" alt="theme">
+      </button>
+    </nav>
+  </header>
+
+</body>
+
+</html>
