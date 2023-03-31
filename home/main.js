@@ -1,6 +1,16 @@
 const searchBtn = document.getElementById("search-btn");
+const showAsideBtn = document.getElementById("aside-btn");
 
-searchBtn.addEventListener("mouseover", (e) => {
+showAsideBtn.addEventListener("click", () => {
+  let aside = document.getElementById("aside");
+  if (aside.hasAttribute("hidden")) {
+    showAside(aside);
+  } else {
+    hideAside(aside);
+  }
+});
+
+searchBtn.addEventListener("mouseover", () => {
   let searchBox = document.getElementById("search-box");
   searchBox.removeAttribute("hidden");
   searchBox.removeAttribute("disabled");
@@ -8,7 +18,7 @@ searchBtn.addEventListener("mouseover", (e) => {
   searchBox.focus();
 });
 
-searchBtn.addEventListener("click", (e) => {
+searchBtn.addEventListener("click", () => {
   let searchBox = document.getElementById("search-box");
   if (searchBox.hasAttribute("disabled")) {
     searchBtn.src = "./icons/cancel.png";
@@ -39,4 +49,24 @@ function changeTheme() {
     document.documentElement.setAttribute("data-theme", "dark");
     window.localStorage.setItem("theme", "dark");
   }
+}
+
+function showAside(aside) {
+  console.log("showingAside........");
+
+  aside.removeAttribute("aria-disabled");
+  aside.removeAttribute("hidden");
+  showAsideBtn.src = "./icons/cancel.png";
+}
+
+function hideAside(aside) {
+  console.log("hideAside........");
+
+  aside.style.animation = "hideAside 0.4s ease-out forwards";
+  showAsideBtn.src = "./icons/menu.png";
+  setTimeout(() => {
+    aside.style.animation = "";
+    aside.setAttribute("aria-disabled", "true");
+    aside.setAttribute("hidden", "");
+  }, 400);
 }

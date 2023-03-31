@@ -1,17 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-
-<script src="./theme.js"></script>
+<html lang="en">
 
 <style>
-  html[data-theme="dark"] {
+  html {
     background-color: #000;
     color: #EEE;
-  }
-
-  html[data-theme="light"] {
-    background-color: #EEE;
-    color: #000;
   }
 </style>
 
@@ -26,6 +19,10 @@
 
 <body>
 
+  <aside id="aside" hidden aria-disabled="true">
+    <h2>choose ur movie</h2>
+  </aside>
+
   <header>
     <div>
       <a href="#">
@@ -35,17 +32,17 @@
     </div>
     <nav id="header-nav">
       <button>
-        <img id="search-btn" width="25" src="./icons/search.png" alt="search">
+        <img id="search-btn" width="25" src="./icons/search.png" alt="Search">
       </button>
       <input id="search-box" type="text" hidden disabled>
       <button>
         <img width="25" src="./icons/top.png" alt="">
       </button>
       <button>
-        <img width="25" src="./icons/account.png" alt="account">
+        <img width="25" src="./icons/account.png" alt="Account">
       </button>
-      <button>
-        <img width="25" onclick="changeTheme()" src="./icons/theme.png" alt="theme">
+      <button id="aside-btn-container">
+        <img id="aside-btn" width="25" src="./icons/menu.png" alt="Menu">
       </button>
     </nav>
   </header>
