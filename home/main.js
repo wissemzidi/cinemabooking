@@ -57,6 +57,7 @@ function showAside(aside) {
   aside.removeAttribute("aria-disabled");
   aside.removeAttribute("hidden");
   showAsideBtn.src = "./icons/cancel.png";
+  document.getElementById("aside-search-box").focus();
 }
 
 function hideAside(aside) {

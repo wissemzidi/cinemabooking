@@ -21,14 +21,94 @@ body {
 }
 
 aside {
+  padding: 1rem;
   position: fixed;
   inset: 0;
-  background-color: rgb(41, 35, 35);
+  background-image: linear-gradient(
+    20deg,
+    rgba(0, 51, 80, 0.3) 30%,
+    rgb(19, 19, 19) 90%
+  );
+  backdrop-filter: blur(5px) grayscale(100);
   translate: 0 -100vw;
 }
 
 aside:not([hidden]) {
   animation: showAside 0.7s ease forwards;
+}
+
+.aside__title {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.aside__main {
+  padding-top: 5vh;
+}
+
+.aside__ul {
+  margin-inline: auto;
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  list-style: none;
+}
+
+.aside__ul > div {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.aside__ul li {
+  margin: 0.5rem;
+}
+
+.aside__ul li a {
+  position: relative;
+  display: block;
+  min-width: 7rem;
+  text-decoration: none;
+  padding: 0.6rem 0.8rem;
+  background-image: linear-gradient(
+    to right bottom,
+    rgb(0, 110, 255),
+    rgba(255, 255, 255, 0.726)
+  );
+  color: white;
+  transition: 0.3s ease-out scale;
+  isolation: isolate;
+}
+
+.aside__ul li a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  background-image: linear-gradient(to right, rgb(0, 110, 255), white);
+  z-index: -1;
+  transition: 0.3s ease-out width;
+}
+
+.aside__ul li a::after {
+  content: ">";
+  position: absolute;
+  font-size: 2rem;
+  left: -10px;
+  top: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: 0.2s ease-out opacity, 0.3s ease-out left;
+}
+
+.aside__ul li a:where(:hover, :focus-visible)::before {
+  width: 100%;
+}
+
+.aside__ul li a:where(:hover, :focus-visible)::after {
+  left: -25px;
+  opacity: 0.75;
 }
 
 @keyframes showAside {
@@ -49,6 +129,43 @@ aside:not([hidden]) {
   }
   to {
     opacity: 0;
+  }
+}
+
+.aside-search {
+  padding-top: clamp(1rem, 5vh, 3rem);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+#aside-search-box {
+  width: 60vw;
+  max-width: 20rem;
+  margin-inline: auto;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  outline: none;
+  transition: padding 0.2s ease-out;
+}
+
+@media (max-width: 425px) {
+  .aside__ul > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .aside__ul {
+    gap: 0;
+  }
+  #aside-search-box {
+    width: 80vw;
+  }
+  #page-main-title {
+    font-size: 1.5rem;
   }
 }
 
@@ -150,3 +267,117 @@ main {
   max-width: 90rem;
   margin-inline: auto;
 }
+
+#hero {
+  display: flex;
+}
+
+.hero__left {
+  padding: 7rem;
+  max-width: 50%;
+}
+
+.hero-p {
+  max-width: 25rem;
+  font-size: 3rem;
+}
+
+.hero-important {
+  color: red;
+  font-family: monospace, sans-serif;
+}
+
+.hero-button {
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  margin: 2rem;
+  margin-bottom: 1rem;
+  background-image: linear-gradient(130deg, #6615b6 80%, rgb(0, 163, 255, 0.6));
+  color: white;
+  border: none;
+  outline-color: transparent;
+  border-radius: 10px;
+  rotate: 2deg;
+}
+
+.hero-recommandation-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.9rem;
+  max-width: 13rem;
+  margin-inline: 1rem;
+}
+
+.hero-recommandation-list a {
+  text-decoration: none;
+  color: rgb(0, 178, 255, 0.8);
+  text-shadow: 5px 5px 5px rgb(0, 117, 255, 0.5);
+}
+
+.hero__right {
+  overflow: hidden;
+  display: grid;
+  gap: 10px;
+  max-width: 60%;
+  margin-inline: auto;
+  justify-content: center;
+  align-items: center;
+  rotate: 1.5deg;
+}
+
+.hero__right-line {
+  display: flex;
+  gap: 10px;
+  animation: change-margin var(--animation-duration) linear infinite;
+}
+
+.hero__right-line img {
+  aspect-ratio: 9/15;
+  border-radius: 10px;
+}
+
+.hero__right-line1 {
+  --animation-duration: 70s;
+}
+
+.hero__right-line2 {
+  --animation-duration: 55s;
+}
+
+.hero__right-line3 {
+  --animation-duration: 60s;
+}
+
+@keyframes change-margin {
+  from {
+    margin-left: 0;
+  }
+  50% {
+    margin-left: -20%;
+  }
+  to {
+    margin-left: 0;
+    /* margin-left: -50%; */
+  }
+}
+/* 
+@keyframes change-margin2 {
+  from,
+  to {
+    margin: 0;
+  }
+  50% {
+    margin-right: -10%;
+  }
+}
+
+@keyframes change-margin3 {
+  from,
+  to {
+    margin-left: 2rem;
+  }
+  50% {
+    margin-left: 10%;
+  }
+} */
