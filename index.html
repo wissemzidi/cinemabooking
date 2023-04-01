@@ -26,6 +26,9 @@
 </head>
 
 <body>
+  <img class="deco-img deco-img1" src="./icons/Film camera.png" alt="">
+  <img class="deco-img deco-img2" src="./icons/3d glasses.png" alt="">
+  <img class="deco-img deco-img3" src="./icons/Video camera.png" alt="">
 
   <aside id="aside" hidden aria-disabled="true">
     <div class="aside__header">
@@ -58,7 +61,7 @@
       <h1 id="page-main-title">Cinema Booking</h1>
     </div>
     <nav id="header-nav">
-      <button>
+      <button id="search-button">
         <img id="search-btn" width="25" src="./icons/search.png" alt="Search">
       </button>
       <input id="search-box" type="search" hidden disabled>
@@ -80,7 +83,10 @@
         <h2 class="hero-p">
           choose your <span class="hero-important">movie</span> and buy your ticket
         </h2>
-        <button class="hero-button">Buy Now</button>
+        <!-- <button class="hero-button">Buy Now</button> -->
+        <div class="hero-button">
+          <a href="#">Buy Now</a>
+        </div>
         <ul class="hero-recommandation-list">
           <li><a href="#">Top Selling</a></li>
           <li><a href="#">Trending</a></li>
@@ -168,6 +174,48 @@
         </div>
       </div>
       </div>
+    </section>
+
+
+
+
+
+    <section id="page1">
+      <article class="page1-header">
+        <a href="">
+          <img src="./icons/Fast charge.png" alt="">
+          <br>
+          <h4>Fast</h4>
+        </a>
+        <a href="">
+          <img src="./icons/Cyber security.png" alt="">
+          <br>
+          <h4>Secure</h4>
+        </a>
+        <a href="">
+          <img src="./icons/Low price.png" alt="">
+          <br>
+          <h4>Cheap</h4>
+        </a>
+      </article>
+      <article class="page2-main">
+        <div>
+          <img src="./img/movie12.jpg" alt="">
+          <h4>The Witcher</h4>
+          <span>20 $</span>
+        </div>
+        <div>
+          <img src="./img/movie9.jpg" alt="">
+          <h4>After We Fell</h4>
+          <s>15 $</s>
+          <span class="special">12.99 $</span>
+        </div>
+        <div>
+          <img src="./img/movie2.jpg" alt="">
+          <h4>Monsters Vs Aliens</h4>
+          <span>14.49 $</span>
+        </div>
+      </article>
     </section>
   </main>
 

@@ -18,7 +18,10 @@ searchBtn.addEventListener("mouseover", () => {
   searchBox.focus();
 });
 
-searchBtn.addEventListener("click", () => {
+let searchButton = document.getElementById("search-button");
+searchButton.addEventListener("click", showHide_searchBox);
+
+function showHide_searchBox() {
   let searchBox = document.getElementById("search-box");
   if (searchBox.hasAttribute("disabled")) {
     searchBtn.src = "./icons/cancel.png";
@@ -34,7 +37,7 @@ searchBtn.addEventListener("click", () => {
       searchBox.removeAttribute("closing");
     }, 500);
   }
-});
+}
 
 function changeTheme() {
   let currTheme = window.localStorage.getItem("theme");
