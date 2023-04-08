@@ -1,3 +1,4 @@
+<?php require "./func.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,20 +10,20 @@
 </style>
 
 <head>
-  <meta name="keywords" content="cinema, booking, cinemabooking, movies">
-  <meta name="author" content="Wissem Koussay">
-  <meta name="publisher" content="Wissem">
-  <meta name="copyright" content="wissemzidi 2022">
-  <meta name="description" content="the best website to book your cinema ticket.">
-  <meta name="page-topic" content="booking movies tickets">
-  <meta name="page-type" content="commercial">
-  <meta name="audience" content="Everyone">
+  <meta name="keywords" content="cinema, booking, cinemabooking, series, netflix, netflixy, movies">
+  <meta name="author" content="Wissem">
+  <meta name="publisher" content="wissem">
+  <meta name="copyright" content="wissemzidi 2023">
+  <meta name="description" content="the best website to book your movies/cinema tickets. online ticket buying for all the major theatres and cinemas across Tunisia.">
+  <meta name="page-topic" content="online movies/theatre/cinema tickets booking/buying">
+  <meta name="page-type" content="home">
+  <meta name="audience" content="everyone">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./home/main.js" defer></script>
   <link rel="stylesheet" href="./home/style.css">
-  <title>cinema booking</title>
+  <title>Cinema Booking</title>
 </head>
 
 <body>
@@ -83,7 +84,6 @@
         <h2 class="hero-p">
           choose your <span class="hero-important">movie</span> and buy your ticket
         </h2>
-        <!-- <button class="hero-button">Buy Now</button> -->
         <div class="hero-button">
           <a href="#">Buy Now</a>
         </div>
@@ -201,31 +201,48 @@
       <article class="page2-main" id="page2-main">
         <div selected>
           <img src="./img/movie12.jpg" alt="">
-          <!-- <h4>The Witcher</h4> -->
-          <!-- <span>20 $</span> -->
         </div>
         <div>
           <img src="./img/movie9.jpg" alt="">
-          <!-- <h4>After We Fell</h4> -->
-          <!-- <s>15 $</s> -->
-          <!-- <span class="special">12.99 $</span> -->
         </div>
         <div>
           <img src="./img/movie2.jpg" alt="">
-          <!-- <h4>Monsters Vs Aliens</h4> -->
-          <!-- <span>14.49 $</span> -->
         </div>
         <div>
           <img src="./img/movie5.jpg" alt="">
-          <!-- <h4>Monsters Vs Aliens</h4> -->
-          <!-- <span>14.49 $</span> -->
         </div>
         <div>
           <img src="./img/movie4.jpg" alt="">
-          <!-- <h4>Monsters Vs Aliens</h4> -->
-          <!-- <span>14.49 $</span> -->
         </div>
       </article>
+    </section>
+
+
+
+    <section id="page2">
+      <h2>Subscribe to our news mail :</h2>
+      <form method="post" onsubmit="verifyMailSubs()">
+        <div class="input-container">
+          <input type="mail" name="useremail" id="useremailInput">
+          <button type="submit" name="mailSubsBtn" id="mailSubsBtn">Subscribe</button>
+        </div>
+        <div class="error">
+          <?php
+          if (isset($_POST["mailSubsBtn"])) {
+            $res = subsMail();
+            echo "<span class='res'>$res</span>";
+          }
+          ?>
+        </div>
+      </form>
+    </section>
+
+
+    <section id="page3">
+      <h2 class="page3__header">Available movies : </h2>
+      <div class='page3__cards-container'>
+        <?php getAllMovies() ?>
+      </div>
     </section>
   </main>
 
