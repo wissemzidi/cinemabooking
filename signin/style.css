@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Ms+Madi&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("http://fonts.cdnfonts.com/css/netron");
+
+*,
+*::before,
+*::after {
+  font-family: "poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --clr-primary-900: rgb(245, 245, 245);
+  --clr-primary-800: rgb(193, 193, 193);
+  --clr-primary-700: rgb(5, 255, 5);
+  --clr-primary-600: #ff1000;
+  --clr-primary-500: #00a3ff;
+  --clr-primary-300: rgba(220, 220, 220, 0.5);
+  --clr-primary-200: rgba(255, 255, 255, 0.06);
+  --clr-primary-100: rgb(0, 0, 0);
+
+  --clr-neutral-100: 24, 100%, 50%;
+  --clr-neutral-200: #00a3ff;
+  --clr-hsl-blue: 210, 100%, 60%;
+  --clr-hsl-red: 0, 100%, 50%;
+}
+
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  background-color: var(--clr-primary-100);
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+#page {
+  width: min(100vw, 40rem);
+  min-height: 100vh;
+  background-color: var(--clr-primary-100);
+}
+
+#login__header {
+  font-family: var(--ff-netron);
+  color: var(--clr-primary-600);
+  font-weight: 500;
+  margin: 4vh 0;
+}
+
+#login {
+  position: relative;
+  min-height: 50vh;
+  margin: 10vh 0.5rem;
+  padding: 1rem;
+  background-color: var(--clr-primary-200);
+  border-radius: 10px;
+}
+
+#return__btn {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  text-decoration: none;
+  border-radius: 10px;
+  filter: invert(1);
+}
+
+#return__btn img {
+  fill: red;
+}
+
+#login__input {
+  display: flex;
+  flex-direction: column;
+  min-height: 10rem;
+}
+
+#login__input__container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#login__input__container label {
+  padding: 0.5rem 0.2rem;
+  color: var(--clr-primary-500);
+  font-size: 1.1rem;
+  font-weight: 350;
+}
+
+#login__input__container input {
+  position: relative;
+  height: 2.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 300;
+  background-color: var(--clr-primary-800);
+  box-shadow: 0 0 10px -5px black;
+  border-radius: 10px;
+  border: none;
+  border-bottom: 1.5px solid transparent;
+  outline: none;
+  transition: 0.4s border ease-out;
+}
+
+#login__input__container input:where(:hover, :focus-visible) {
+  border-bottom: 1.5px solid var(--clr-primary-500);
+}
+
+.invalid {
+  border-bottom: 1.5px solid var(--clr-primary-600) !important;
+}
+
+.valid {
+  border-bottom: 1.5px solid var(--clr-primary-500) !important;
+}
+
+@keyframes shake {
+  from {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+#input__conditions {
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+  color: var(--clr-primary-800);
+  font-size: 0.8rem;
+  letter-spacing: -0.5px;
+}
+
+#login__submit {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#login__submit__btn {
+  position: relative;
+  width: 90%;
+  height: 3.5rem;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--clr-neutral-200);
+  border-radius: 10px;
+  border: none;
+  background-color: transparent;
+  outline: 1px solid var(--clr-neutral-200);
+  opacity: 0.8;
+  cursor: pointer;
+  transition: 0.3s background-color, color ease-out;
+  isolation: isolate;
+}
+
+#login__submit__btn:hover {
+  background-color: hsl(var(--clr-hsl-blue), 5%);
+}

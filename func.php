@@ -124,3 +124,10 @@ function getMovieInfo()
     echo "<span class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</span>";
   }
 }
+
+function errorMsg($errorMsg)
+{
+  if ($errorMsg != "") {
+    echo "<span class='error'>$errorMsg</span>";
+  }
+}

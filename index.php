@@ -69,9 +69,9 @@
       <button>
         <img width="25" src="./icons/top.png" alt="">
       </button>
-      <button>
+      <a href="./signin/index.php">
         <img width="25" src="./icons/account.png" alt="Account">
-      </button>
+      </a>
       <button id="aside-btn-container">
         <img id="aside-btn" width="25" src="./icons/menu.png" alt="Menu">
       </button>

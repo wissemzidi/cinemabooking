@@ -10,6 +10,14 @@
 </style>
 
 <head>
+  <meta name="keywords" content="cinema, booking, cinemabooking, series, netflix, netflixy, movies">
+  <meta name="author" content="Wissem">
+  <meta name="publisher" content="wissem">
+  <meta name="copyright" content="wissemzidi 2023">
+  <meta name="description" content="the best website to book your movies/cinema tickets. online ticket buying for all the major theatres and cinemas across Tunisia.">
+  <meta name="page-topic" content="online movies/theatre/cinema tickets booking/buying">
+  <meta name="page-type" content="home">
+  <meta name="audience" content="everyone">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
