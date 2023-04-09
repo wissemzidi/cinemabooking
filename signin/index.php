@@ -1,4 +1,7 @@
-<?php require '../func.php'; ?>
+<?php
+require '../func.php';
+$error_msg = "";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,20 +25,19 @@
 </head>
 
 <body>
-  <div class="bg"></div>
-  <div class="spinner"></div>
   <section id="page">
     <center>
       <h2 id="login__header">Sign In</h2>
     </center>
-    <form id="login" method="POST">
+    <?php signin() ?>
+    <form name="signin_form" id="login" method="POST">
       <a href="../index.php" id="return__btn">
         <img height="20" src="./icons/return.svg" alt=">" />
       </a>
       <div id="login__input">
         <div id="login__input__container">
           <label for="email__input" id="email__label">Name or Email</label>
-          <input id="email__input" class="" title="Email" type="text" autocomplete="off" name="name" />
+          <input id="email__input" class="" title="Email" type="text" autocomplete="off" name="username" />
         </div>
         <div id="login__input__container">
           <label for="password__input" id="password__label">Password</label>
@@ -53,9 +55,9 @@
                 padding: 0.3rem 0.6rem;
                 text-decoration: none;
                 background-color: #111;
-                color: white;
+                color: #999;
                 border-radius: 50px;
-                border: 1px solid #EEE
+                border: 1px solid #777
               " href="../signup/index.php">
             Sign Up
           </a>
@@ -65,7 +67,7 @@
         <div style="color: red;">
           <br>
           <!-- Error message -->
-          <?php errorMsg("") ?>
+          <?php echo $error_msg ?>
         </div>
       </center>
     </form>

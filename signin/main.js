@@ -26,7 +26,6 @@ window.addEventListener("keyup", () => {
   ) {
     submitBtn.classList.remove("allValid");
     submitBtn.style.backgroundColor = "transparent";
-    submitBtn.style.color = "var(--clr-neutral-200)";
     submitBtn.style.opacity = ".8";
     submitBtn.style.cursor = "auto";
   }

@@ -22,7 +22,7 @@ window.addEventListener("keyup", () => {
     passwordInput.classList.contains("valid")
   ) {
     submitBtn.classList.add("allValid");
-    submitBtn.style.backgroundColor = "hsl(var(--clr-neutral-100))";
+    submitBtn.style.backgroundColor = "var(--clr-neutral-200)";
     submitBtn.style.color = "white";
     submitBtn.style.opacity = "1";
     submitBtn.style.cursor = "pointer";
@@ -33,7 +33,6 @@ window.addEventListener("keyup", () => {
   ) {
     submitBtn.classList.remove("allValid");
     submitBtn.style.backgroundColor = "transparent";
-    submitBtn.style.color = "hsl(var(--clr-hsl-red), 0.8)";
     submitBtn.style.opacity = ".8";
     submitBtn.style.cursor = "auto";
     submitBtn.addEventListener("click", function () {

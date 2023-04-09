@@ -12,33 +12,45 @@
 }
 
 :root {
-  --clr-primary-900: rgb(15, 15, 15);
-  --clr-primary-800: rgb(30, 30, 30);
+  --clr-primary-900: rgb(245, 245, 245);
+  --clr-primary-800: rgb(193, 193, 193);
   --clr-primary-700: rgb(5, 255, 5);
   --clr-primary-600: #ff1000;
-  --clr-primary-500: #6c63ff;
-  --clr-primary-300: #ebebeb;
-  --clr-primary-200: rgb(240, 240, 240);
-  --clr-primary-100: rgb(250, 250, 250);
+  --clr-primary-500: #00a3ff;
+  --clr-primary-300: rgba(220, 220, 220, 0.5);
+  --clr-primary-200: rgba(255, 255, 255, 0.06);
+  --clr-primary-100: rgb(0, 0, 0);
 
   --clr-neutral-100: 24, 100%, 50%;
-  --clr-neutral-200: #6c63ff;
+  --clr-neutral-200: #00a3ff;
   --clr-hsl-blue: 210, 100%, 60%;
   --clr-hsl-red: 0, 100%, 50%;
-
-  --ff-netron: "Netron", sans-serif;
 }
 
-html {
-  overflow: scroll;
-  overflow-x: hidden;
+::-webkit-scrollbar {
+  width: 1vw;
+  max-width: 5px;
+  background-color: rgb(49, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #474747;
+  transition: background-color ease-out 0.1s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5d5d5d;
 }
 
 body {
+  background-image: linear-gradient(
+    -110deg,
+    rgba(255, 0, 0, 0.6),
+    rgba(0, 0, 0, 1) 30%
+  );
   position: relative;
-  background-color: var(--clr-primary-100);
-  width: 100vw;
   min-height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
 }
@@ -95,7 +107,6 @@ body {
 #page {
   width: min(100vw, 40rem);
   min-height: 100vh;
-  background-color: var(--clr-primary-100);
 }
 
 #login__header {
@@ -120,6 +131,7 @@ body {
   left: 0.25rem;
   text-decoration: none;
   border-radius: 10px;
+  filter: invert(1);
 }
 
 #return__btn img {
@@ -206,14 +218,13 @@ body {
   height: 3.5rem;
   font-weight: 400;
   font-size: 1.2rem;
-  color: hsl(var(--clr-hsl-red), 0.8);
+  color: var(--clr-neutral-200);
   border-radius: 10px;
   border: none;
   background-color: transparent;
-  outline: 1px solid hsl(var(--clr-neutral-100), 80%);
+  outline: 1px solid var(--clr-neutral-200);
   opacity: 0.8;
   cursor: pointer;
-  transition: 0.35s background-color ease-out;
   transition: 0.3s background-color, color ease-out;
   isolation: isolate;
 }

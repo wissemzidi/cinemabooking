@@ -1,10 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Ms+Madi&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("http://fonts.cdnfonts.com/css/netron");
 
-*,
-*::before,
-*::after {
-  font-family: "poppins", sans-serif;
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -27,15 +23,31 @@
   --clr-hsl-red: 0, 100%, 50%;
 }
 
-html {
-  overflow: scroll;
-  overflow-x: hidden;
+::-webkit-scrollbar {
+  width: 1vw;
+  max-width: 5px;
+  background-color: rgb(49, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #474747;
+  transition: background-color ease-out 0.1s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5d5d5d;
 }
 
 body {
-  position: relative;
-  background-color: var(--clr-primary-100);
-  width: 100vw;
+  background-image: linear-gradient(
+    -110deg,
+    rgba(255, 0, 0, 0.6),
+    rgba(0, 0, 0, 1) 30%
+  );
+  color: #eee;
+  background-color: transparent;
+  font-family: "poppins", sans-serif;
+  min-width: 100vw;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -44,7 +56,6 @@ body {
 #page {
   width: min(100vw, 40rem);
   min-height: 100vh;
-  background-color: var(--clr-primary-100);
 }
 
 #login__header {

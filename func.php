@@ -1,5 +1,4 @@
 <?php
-
 function connDb()
 {
   $server = "localhost";
@@ -46,7 +45,7 @@ function getAllMovies()
       $movieId = $row["id"];
       $movieName = $row["name"];
       echo "<div class='page3__card'>";
-      echo "<div class='page3__movieName'>$movieName</div>";
+      echo "<h4 class='page3__movieName'>$movieName</h4>";
       echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
       if (strlen($row["sits"]) > 1) {
         echo "<div class='available page3__movieStatus'></div>";
@@ -55,11 +54,22 @@ function getAllMovies()
       }
       echo ("
       <div class='page3__movieBtn-container'>
-        <a href='./movie.php/?movieId=$movieId' class='page3__movieBtn'>
+        <a href='./movie.php?movieId=$movieId' class='page3__movieBtn'>
           <img src='./icons/play.svg' width='50%' alt='Watch Now'>
         </a>
       </div>
       ");
+      $genres = explode("|", $row["genres"]);
+      echo ("
+      <div class='page3__genres-container'>
+      ");
+      array_map(function ($genre) {
+        echo "<span class='genre'>$genre</span>";
+      }, $genres);
+      echo ("
+      </div>
+      ");
+
       echo "</div>";
     }
   } else {
@@ -113,7 +123,7 @@ function getMovieInfo()
       }
       echo ("
       <div class='page3__movieBtn-container'>
-        <a href='./movie.php/?movieId=$movieId' class='page3__movieBtn'>
+        <a href='./movie.php?movieId=$movieId' class='page3__movieBtn'>
           <img src='./icons/play.svg' width='50%' alt='Watch Now'>
         </a>
       </div>
@@ -125,9 +135,54 @@ function getMovieInfo()
   }
 }
 
-function errorMsg($errorMsg)
+
+function signup()
 {
-  if ($errorMsg != "") {
-    echo "<span class='error'>$errorMsg</span>";
+  if (isset($_POST["reg"])) {
+    $conn = connDb();
+    $email = $_POST["email"];
+    $Rq = "SELECT * FROM users WHERE email='$email' ;";
+    $res = mysqli_query($conn, $Rq);
+
+    if (mysqli_num_rows($res) == 0) {
+      $username = $_POST["username"];
+      $password = $_POST["pwd"];
+      $Rq = "INSERT INTO users VALUES('', '$username', '$email', '$password') ;";
+      $res = mysqli_query($conn, $Rq);
+
+      if (!$res) {
+        error_msg("something went wrong, please try again later");
+      } else {
+        echo "signed in successfully as $username";
+        header("Location:../");
+      }
+    } else {
+      error_msg("this account already exist");
+    }
   }
+}
+
+function signin()
+{
+  if (isset($_POST["reg"])) {
+    $conn = connDb();
+    $username = $_POST["username"];
+    $password = $_POST["pwd"];
+    $Rq = "SELECT * FROM users WHERE username='$username' AND password='$password' ;";
+    $res = mysqli_query($conn, $Rq);
+
+    if (mysqli_num_rows($res) == 0) {
+      global $error_msg;
+      $error_msg = "Those credential are wrong.";
+    } else {
+      global $error_msg;
+      $error_msg = "All good :).";
+    }
+  }
+}
+
+function error_msg($msg)
+{
+  global $error_msg;
+  $error_msg = $msg;
 }

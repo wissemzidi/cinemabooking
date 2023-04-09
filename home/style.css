@@ -706,3 +706,27 @@ main {
 .page3__movieStatus.notAvailable {
   background-color: rgba(255, 0, 0, 0.8);
 }
+
+.page3__genres-container {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  translate: -50%;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.page3__card:is(:hover, :focus-within) .page3__genres-container {
+  opacity: 0.9;
+}
+
+.page3__genres-container .genre {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  background-color: rgba(0, 162, 255, 0.75);
+  backdrop-filter: blur(2px);
+}
