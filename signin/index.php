@@ -37,11 +37,11 @@ $error_msg = "";
       <div id="login__input">
         <div id="login__input__container">
           <label for="email__input" id="email__label">Name or Email</label>
-          <input id="email__input" class="" title="Email" type="text" autocomplete="off" name="username" />
+          <input id="email__input" class="email__input" title="Email" type="text" autocomplete="off" name="email" />
         </div>
         <div id="login__input__container">
           <label for="password__input" id="password__label">Password</label>
-          <input title="Password" id="password__input" class="" type="password" autocomplete="off" name="pwd" />
+          <input title="Password" id="password__input" class="pwd__input" type="password" autocomplete="off" name="pwd" />
           <span id="input__conditions">Minimum 8 characters</span>
         </div>
       </div>

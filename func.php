@@ -1,27 +1,31 @@
 <?php
+
 function connDb()
 {
-  $server = "localhost";
-  $username = "root";
-  $pwd = "";
-  $dbname = "cinemabooking";
-  $conn = mysqli_connect($server, $username, $pwd);
-  mysqli_select_db($conn, $dbname);
+  // require "./conn.php";
+  // connection credentials
+  $conn_server = "localhost";
+  $conn_username = "root";
+  $conn_pwd = "";
+  $db = "cinemabooking";
+  $conn = mysqli_connect($conn_server, $conn_username, $conn_pwd);
+  mysqli_select_db($conn, $db);
   return $conn;
 }
+
 
 function subsMail()
 {
   $conn = connDb();
-  $useremail = $_POST["useremail"];
+  $email = $_POST["email"];
 
-  $Rq = "SELECT * FROM mailsubscribers WHERE email='$useremail' ;";
+  $Rq = "SELECT * FROM mailsubscribers WHERE email='$email' ;";
   $res = mysqli_query($conn, $Rq);
 
   if (mysqli_num_rows($res) > 0) {
     return "user already exist";
   } else {
-    $Rq = "INSERT INTO mailsubscribers value('', '$useremail')";
+    $Rq = "INSERT INTO mailsubscribers value('', '$email')";
     $res = mysqli_query($conn, $Rq);
 
     if (!$res) {
@@ -47,14 +51,20 @@ function getAllMovies()
       echo "<div class='page3__card'>";
       echo "<h4 class='page3__movieName'>$movieName</h4>";
       echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
-      if (strlen($row["sits"]) > 1) {
+      if (strlen($row["seats"]) > 1) {
         echo "<div class='available page3__movieStatus'></div>";
       } else {
         echo "<div class='notAvailable page3__movieStatus'></div>";
       }
+
+      // if (str_contains($_SERVER['REQUEST_URI'], "/movie.php")) {
+      //   $dot = "..";
+      // } else {
+      //   $dot = ".";
+      // }
       echo ("
       <div class='page3__movieBtn-container'>
-        <a href='./movie.php?movieId=$movieId' class='page3__movieBtn'>
+        <a href='./movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
           <img src='./icons/play.svg' width='50%' alt='Watch Now'>
         </a>
       </div>
@@ -98,6 +108,7 @@ function getMovieName()
   }
 }
 
+
 function getMovieInfo()
 {
   if (isset($_GET['movieId'])) {
@@ -107,33 +118,177 @@ function getMovieInfo()
     $res = mysqli_query($conn, $Rq);
 
     if (!$res) {
-      echo "something went wrong";
+      echo "<span class='important-error' style='min-height: 40vh'>The server isn't responding please try again later.</span>";
     } else {
       $row = mysqli_fetch_array($res);
-      echo "<p> $row[description] </p>";
       $movieId = $row["id"];
       $movieName = $row["name"];
+      $userId = "6"; // idk how to use cookies in php so...
+      $seats = explode("|", $row["seats"]);
+
+      echo ("
+      <div class='hero__left'>
+        <img class='hero__moviePic' width='100%' src='$row[pic]'>
+      </div>
+      ");
+      echo ("
+      <div class='hero__right'>
+        <h2 class='hero__movieName'>$movieName</h2>
+        <p class='hero__description'> $row[description] </p>
+      ");
+      echo ("
+        <form class='hero__buy' name='purchase_seat' method='POST'>
+          <input type='text' name='userId' value='$userId' hidden>
+          <input type='text' name='movieId' value='$movieId' hidden>
+        ");
+      $last_seat_letter = $seats[0][0];
+      foreach ($seats as $seat) {
+        if ($last_seat_letter[0] != $seat[0]) {
+          echo "<br>";
+          $last_seat_letter = $seat[0];
+        }
+        echo ("
+        <button type='submit' name='seat' value='$seat' class='buy_seat_btn'>$seat</button>
+        ");
+      }
+      echo ("
+        </form>
+      </div>
+      ");
+      echo ("
+      </div>
+      ");
+    }
+  } else {
+    echo "<span class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</span>";
+  }
+}
+
+
+function book_seat()
+{
+  if (isset($_POST["seat"])) {
+    $conn = connDb();
+    $userId = $_POST["userId"];
+    $movieId = $_POST["movieId"];
+    $seat = $_POST["seat"];
+    $date = Date("Y-m-d H:m:s");
+
+    $Rq = "INSERT INTO purchases VALUES('$userId', '$movieId', '$date', '$seat') ;";
+    $res = mysqli_query($conn, $Rq);
+
+    if (!$res) {
+      echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
+    } else {
+
+      // ! remove the purchase seat from the movie available seats
+
+      echo "<p class='success_purchase' style='min-height: 40vh'>Successfully purchase seat " . $seat . "</p>";
+    }
+    mysqli_close($conn);
+  }
+}
+
+
+
+function get_suggested_movies()
+{
+  $conn = conndb();
+  $pageMovieId = $_GET["movieId"];
+  $Rq = "SELECT genres FROM movies WHERE id = '$pageMovieId'; ";
+  $res = mysqli_query($conn, $Rq);
+
+  if (!$res) {
+    die("Couldn't get movies");
+  } elseif (mysqli_num_rows($res) == 0) {
+    // ! get top 10 movies from the database
+    getTop10($conn);
+  }
+
+  $row = mysqli_fetch_array($res);
+  $sug_genres = explode("|", $row["genres"]);
+  $id_userd = [];
+
+  foreach ($sug_genres as $sug_genre) {
+    $Rq = "SELECT * FROM movies WHERE genres LIKE '%$sug_genre%' ;";
+    $res = mysqli_query($conn, $Rq);
+
+    while ($row = mysqli_fetch_array($res)) {
+      $movieId = $row["id"];
+      if ($pageMovieId == $movieId || in_array($movieId, $id_userd)) {
+        continue;
+      }
+      array_push($id_userd, $movieId);
+      $movieName = $row["name"];
       echo "<div class='page3__card'>";
-      echo "<div class='page3__movieName'>$movieName</div>";
+      echo "<h4 class='page3__movieName'>$movieName</h4>";
       echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
-      if (strlen($row["sits"]) > 1) {
+      if (strlen($row["seats"]) > 1) {
         echo "<div class='available page3__movieStatus'></div>";
       } else {
         echo "<div class='notAvailable page3__movieStatus'></div>";
       }
       echo ("
       <div class='page3__movieBtn-container'>
-        <a href='./movie.php?movieId=$movieId' class='page3__movieBtn'>
-          <img src='./icons/play.svg' width='50%' alt='Watch Now'>
+        <a href='../movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
+          <img src='../icons/play.svg' width='50%' alt='Watch Now'>
         </a>
+      </div>
+      ");
+      $genres = explode("|", $row["genres"]);
+      echo ("
+      <div class='page3__genres-container'>
+      ");
+      array_map(function ($genre) {
+        echo "<span class='genre'>$genre</span>";
+      }, $genres);
+      echo ("
       </div>
       ");
       echo "</div>";
     }
-  } else {
-    echo "<span class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</span>";
+  }
+  mysqli_close($conn);
+}
+
+
+function getTop10($conn)
+{
+  $Rq = "SELECT * FROM movies";
+  $res = mysqli_query($conn, $Rq);
+
+  while ($row = mysqli_fetch_array($res)) {
+    $movieId = $row["id"];
+    $movieName = $row["name"];
+    echo "<div class='page3__card'>";
+    echo "<h4 class='page3__movieName'>$movieName</h4>";
+    echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
+    if (strlen($row["seats"]) > 1) {
+      echo "<div class='available page3__movieStatus'></div>";
+    } else {
+      echo "<div class='notAvailable page3__movieStatus'></div>";
+    }
+    echo ("
+    <div class='page3__movieBtn-container'>
+      <a href='../movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
+        <img src='../icons/play.svg' width='50%' alt='Watch Now'>
+      </a>
+    </div>
+    ");
+    $genres = explode("|", $row["genres"]);
+    echo ("
+    <div class='page3__genres-container'>
+    ");
+    array_map(function ($genre) {
+      echo "<span class='genre'>$genre</span>";
+    }, $genres);
+    echo ("
+    </div>
+    ");
+    echo "</div>";
   }
 }
+
 
 
 function signup()
@@ -154,7 +309,7 @@ function signup()
         error_msg("something went wrong, please try again later");
       } else {
         echo "signed in successfully as $username";
-        header("Location:../");
+        header("Location: ../signin/");
       }
     } else {
       error_msg("this account already exist");
@@ -162,13 +317,14 @@ function signup()
   }
 }
 
+
 function signin()
 {
   if (isset($_POST["reg"])) {
     $conn = connDb();
-    $username = $_POST["username"];
+    $email = $_POST["email"];
     $password = $_POST["pwd"];
-    $Rq = "SELECT * FROM users WHERE username='$username' AND password='$password' ;";
+    $Rq = "SELECT * FROM users WHERE email='$email' AND password='$password' ;";
     $res = mysqli_query($conn, $Rq);
 
     if (mysqli_num_rows($res) == 0) {
@@ -177,9 +333,11 @@ function signin()
     } else {
       global $error_msg;
       $error_msg = "All good :).";
+      header("Location: ../ ");
     }
   }
 }
+
 
 function error_msg($msg)
 {

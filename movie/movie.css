@@ -29,7 +29,6 @@ body {
     rgba(0, 0, 0, 1) 40%
   );
   color: #eee;
-  overflow-x: hidden;
 }
 
 aside {
@@ -285,327 +284,72 @@ main {
 }
 
 #hero {
+  padding-inline: 0.5rem;
   display: flex;
-  padding-right: 0.5rem;
+  gap: clamp(1rem, 1vw, 3rem);
 }
 
 .hero__left {
-  padding-inline: clamp(1rem, 4vw, 7rem);
-  padding-block: 10rem;
-  max-width: 50%;
-}
-
-.hero-p {
-  max-width: 25rem;
-  font-size: 3rem;
-}
-
-.hero-important {
-  color: red;
-  font-family: monospace, sans-serif;
-}
-
-.hero-button {
-  width: fit-content;
-  margin: 2rem;
-  rotate: 2deg;
-  transition: scale 0.3s ease;
-}
-
-.hero-button a {
-  font-size: 2rem;
-  padding: 1rem 2rem;
-  padding-right: 2.5rem;
-  margin-bottom: 1rem;
-  background-image: linear-gradient(
-    130deg,
-    rgb(102, 21, 182, 0.9) 80%,
-    rgba(0, 166, 255, 0.8)
-  );
-  border: none;
-  outline-color: transparent;
-  border-radius: 10px;
-  color: white;
-  text-decoration: none;
-}
-
-.hero-button:is(:hover, :focus-within) {
-  scale: 1.1;
-}
-
-.hero-button:is(:hover, :focus-within) a {
-  scale: 1.1;
-  box-shadow: 0 0 5px 1px rgba(0, 166, 255, 0.2);
-}
-
-.hero-recommandation-list {
-  list-style: none;
   display: flex;
-  justify-content: space-around;
-  font-size: 0.9rem;
-  max-width: 13rem;
-  margin-inline: 1rem;
-}
-
-.hero-recommandation-list a {
-  text-decoration: none;
-  color: rgb(0, 178, 255, 0.8);
-  text-shadow: 5px 5px 5px rgb(0, 117, 255, 0.5);
-  transition: text-shadow 0.4s ease-out;
-}
-
-.hero-recommandation-list a:is(:hover, :focus-within) {
-  text-shadow: 0px 0px 1px rgb(0, 117, 255, 0.5);
+  flex-grow: 1;
 }
 
 .hero__right {
-  overflow: hidden;
-  display: grid;
-  gap: 10px;
-  width: 60%;
-  max-width: clamp(30%, 50vw, 60%);
-  margin-inline: auto;
-  justify-content: center;
-  align-items: center;
-  rotate: 1.5deg;
-}
-
-.hero__right-line {
-  display: flex;
-  gap: 10px;
-  animation: change-margin var(--animation-duration) linear infinite;
-}
-
-.hero__right-line img {
-  max-width: 160px;
-  aspect-ratio: 9/14;
-  border-radius: 10px;
-}
-
-.hero__right-line1 {
-  --animation-duration: 70s;
-}
-
-.hero__right-line2 {
-  --animation-duration: 55s;
-}
-
-.hero__right-line3 {
-  --animation-duration: 60s;
-}
-
-@keyframes change-margin {
-  from {
-    margin-left: 0;
-  }
-  50% {
-    margin-left: -20%;
-  }
-  to {
-    margin-left: 0;
-  }
-}
-
-@media (max-width: 800px) {
-  .hero__right {
-    position: absolute;
-    inset: 0;
-    top: 3rem;
-    opacity: 0.8;
-    width: 100%;
-    max-width: calc(100vw - 17px);
-    z-index: -1;
-  }
-  .hero-p {
-    font-size: clamp(2.5rem, 1vw, 3rem);
-  }
-  .hero__left {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 300px) {
-  .hero__left {
-    max-width: 100%;
-  }
-  .hero-button {
-    margin-inline: 0;
-  }
-}
-
-.deco-img {
-  position: absolute;
-  top: 23%;
-  left: 5%;
-  z-index: 0;
-  width: clamp(3rem, 10vw, 5rem);
-  opacity: 0.5;
-}
-.deco-img2 {
-  top: 40%;
-  left: 30%;
-}
-.deco-img3 {
-  top: 60%;
-  left: 10%;
-}
-
-#page1 {
-  padding-block: 4rem;
-  padding-inline: 0.5rem;
-}
-
-.page1-header {
-  display: flex;
-  justify-content: space-around;
-  max-width: 50rem;
-  margin-block: 2rem;
-  margin-inline: auto;
-  padding-block: 2.5rem;
-  padding-inline: clamp(0.5rem, 5vw, 4rem);
-  background-image: linear-gradient(
-    20deg,
-    rgb(0, 163, 255, 15%),
-    rgb(255, 0, 0, 15%)
-  );
-}
-
-.page1-header a {
-  text-align: center;
-  text-decoration: none;
-  color: #eee;
-  font-size: clamp(1rem, 5vw, 2rem);
-  transition: color 0.3s ease-out;
-}
-
-.page1-header a:is(:hover, :focus-within) {
-  color: #00a3ff;
-}
-
-.page1-header a img {
-  width: clamp(3rem, 5vw, 6rem);
-}
-
-.page2-main {
-  margin-top: 4rem;
-  display: grid;
-  grid-auto-flow: column;
-  gap: 15px;
-  text-align: center;
-  position: relative;
-}
-
-@media (max-width: 500px) {
-  .page2-main {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-}
-
-.page2-main div {
-  left: 0;
-  margin-left: 0;
-  position: absolute;
-  width: 50vw;
-  max-width: 10rem;
-  aspect-ratio: 9/14;
-  opacity: 0.75;
-  transition: all ease-in-out 1s;
-}
-
-.page2-main div[selected] {
-  position: static;
-  margin-left: 50%;
-  translate: -50%;
-  width: 70vw;
-  max-width: 25rem;
-  opacity: 1;
-  transform: rotateZ(0deg) !important;
-  z-index: 1;
-}
-
-.page2-main img {
-  aspect-ratio: 9/14;
-  width: 100%;
-  height: 100%;
-}
-
-.res {
-  font-size: 1rem;
-  color: #00a3ff;
-  padding: 0.2rem;
-}
-
-.error {
-  padding: 0.2rem;
-  font-size: 1.2rem;
-  text-align: center;
-  color: red;
-}
-
-.important-error {
-  padding: 1rem;
-  font-size: 1.6rem;
-  text-align: center;
-  color: red;
-}
-
-#page2 {
-  padding-inline: 0.5rem;
-  padding-block: 5rem;
-}
-
-#page2 h2 {
-  max-width: 40rem;
-  margin-inline: auto;
-}
-
-#page2 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.input-container {
-  margin-inline: center;
-  margin: 1rem;
-  display: flex;
   width: 100%;
-  max-width: 30rem;
-  background-image: linear-gradient(170deg, #eee 10%, rgba(137, 152, 174, 0.8));
-  background-size: 100%;
-  transition: background-size 0.4s ease-out;
+  padding-block: 1rem;
+  padding-inline: clamp(2rem, 5vw, 5rem);
+  gap: 1rem;
 }
 
-.input-container:has(input:is(:focus-within, :hover)) {
-  background-size: 200%;
+.hero__movieName {
+  font-size: 2.5rem;
+  color: #00a3ff;
 }
 
-.input-container input {
-  padding: 0.6rem 0.8rem;
-  outline: none;
-  border: none;
-  width: 100%;
+.hero__description {
   font-size: 1.1rem;
-  font-weight: lighter;
-  background-color: transparent;
 }
 
-.input-container button {
-  padding: 0.4rem 0.8rem;
-  outline: none;
-  border: none;
-  border-left: 1px solid black;
-  background-color: transparent;
-  font-size: 1rem;
-  font-weight: lighter;
-  cursor: pointer;
-  transition: background-color 0.2s ease-out, color 0.2s ease-out;
+.hero__buy {
+  margin-inline: auto;
 }
-.input-container button:is(:hover, :focus-within) {
+
+.buy_seat_btn {
+  border: none;
+  outline: hidden;
+  padding: 0.5rem;
+  margin-bottom: 0.2rem;
   background-color: red;
   color: white;
+  cursor: pointer;
+  transition: background-color ease-out 0.2s, scale 0.2s ease-out;
+}
+
+.buy_seat_btn:is(:hover, :focus-within) {
+  background-color: #474747;
+  scale: 1.1;
+}
+
+.success_purchase {
+  color: green;
+  padding-block: 3rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+@media (max-width: 600px) {
+  #hero {
+    flex-direction: column-reverse;
+  }
+  .hero__movieName {
+    text-align: center;
+  }
+  .hero__right {
+    padding-inline: 0;
+  }
 }
 
 #page3 {
@@ -623,9 +367,9 @@ main {
 .page3__cards-container {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
   justify-content: center;
   flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .page3__card {
@@ -713,13 +457,11 @@ main {
 .page3__genres-container {
   position: absolute;
   bottom: 0.5rem;
-  gap: 0.5rem;
-  max-width: 20rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   left: 50%;
   translate: -50%;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
   opacity: 0;
   transition: opacity 0.3s ease-out;
 }
@@ -734,4 +476,12 @@ main {
   border-radius: 9999px;
   background-color: rgba(0, 162, 255, 0.75);
   backdrop-filter: blur(2px);
+}
+
+.important-error {
+  padding: 1rem;
+  padding-block: 3rem;
+  font-size: 1.6rem;
+  text-align: center;
+  color: red;
 }

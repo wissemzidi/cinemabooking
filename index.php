@@ -1,4 +1,6 @@
-<?php require "./func.php" ?>
+<?php
+require "./func.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +23,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="./project assets/logo/logo(light).svg">
   <script src="./home/main.js" defer></script>
   <link rel="stylesheet" href="./home/style.css">
   <title>Cinema Booking</title>
@@ -85,7 +88,7 @@
           choose your <span class="hero-important">movie</span> and buy your ticket
         </h2>
         <div class="hero-button">
-          <a href="#">Buy Now</a>
+          <a href="#page3">Buy Now</a>
         </div>
         <ul class="hero-recommandation-list">
           <li><a href="#">Top Selling</a></li>
@@ -223,7 +226,7 @@
       <h2>Subscribe to our news mail :</h2>
       <form method="post" onsubmit="verifyMailSubs()">
         <div class="input-container">
-          <input type="mail" name="useremail" id="useremailInput">
+          <input type="mail" name="email" id="email_input">
           <button type="submit" name="mailSubsBtn" id="mailSubsBtn">Subscribe</button>
         </div>
         <div class="error">
