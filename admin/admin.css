@@ -1,0 +1,97 @@
+* {
+  box-sizing: border-box;
+}
+
+#hero {
+  display: grid;
+}
+
+#admin-signin-form {
+  padding-inline: 0.5rem;
+  margin-top: 5rem;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+#add_movie_form {
+  margin-inline: auto;
+  padding-inline: 0.5rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+/* 
+#add_movie_form > div:not(:last-child) {
+} */
+
+.login_input {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 30rem;
+  padding: 0.6rem 1rem;
+  border-radius: 15px;
+  border: none;
+  font-size: 1.1rem;
+  border-bottom: 1px solid skyblue;
+  outline: none;
+}
+
+.login_button {
+  padding: 0.4rem 0.8rem;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 99px;
+  background-color: rgb(140, 0, 255);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-out, scale 0.2s ease-out,
+    padding-inline 0.2s ease-out;
+}
+
+.login_button:is(:hover, :focus-within) {
+  scale: 1.1;
+  background-color: rgb(0, 89, 255);
+}
+
+.login_success {
+  text-align: center;
+  font-size: 1.5rem;
+  color: rgb(0, 89, 255);
+  margin-block: 2rem;
+  padding: 0.5rem;
+}
+
+.hero_card {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 40rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.hero_card_title {
+  text-indent: 0.5rem;
+  display: grid;
+  align-items: center;
+}
+
+.hero_card_preview {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero_card_preview img {
+  cursor: pointer;
+  filter: invert(1);
+  opacity: 0.75;
+}

@@ -532,6 +532,7 @@ main {
 }
 
 .res {
+  text-align: center;
   font-size: 1rem;
   color: #00a3ff;
   padding: 0.2rem;

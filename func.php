@@ -2,12 +2,7 @@
 
 function connDb()
 {
-  // require "./conn.php";
-  // connection credentials
-  $conn_server = "localhost";
-  $conn_username = "root";
-  $conn_pwd = "";
-  $db = "cinemabooking";
+  require "conn.php";
   $conn = mysqli_connect($conn_server, $conn_username, $conn_pwd);
   mysqli_select_db($conn, $db);
   return $conn;
@@ -136,23 +131,32 @@ function getMovieInfo()
         <h2 class='hero__movieName'>$movieName</h2>
         <p class='hero__description'> $row[description] </p>
       ");
-      echo ("
+      if (count($seats) == 0 || $seats[0] == "") {
+        echo "<p class='important-error'>sorry no seat available right now</p>";
+      } else {
+        echo ("
         <form class='hero__buy' name='purchase_seat' method='POST'>
           <input type='text' name='userId' value='$userId' hidden>
           <input type='text' name='movieId' value='$movieId' hidden>
         ");
-      $last_seat_letter = $seats[0][0];
-      foreach ($seats as $seat) {
-        if ($last_seat_letter[0] != $seat[0]) {
-          echo "<br>";
-          $last_seat_letter = $seat[0];
+        $last_seat_letter = $seats[0][0];
+        echo "<div class='hero__buy_row'>";
+        foreach ($seats as $seat) {
+          $last_seat_letter[0] != $seat[0] ? $new_row = true : $new_row = false;
+          if ($new_row) {
+            $last_seat_letter = $seat[0];
+            echo ("
+            </div>
+            <div class='hero__buy_row'>
+            ");
+          }
+          echo ("
+            <button type='submit' name='seat' value='$seat' class='buy_seat_btn'>$seat</button>
+          ");
         }
-        echo ("
-        <button type='submit' name='seat' value='$seat' class='buy_seat_btn'>$seat</button>
-        ");
+        echo ("</form>");
       }
       echo ("
-        </form>
       </div>
       ");
       echo ("
@@ -160,7 +164,7 @@ function getMovieInfo()
       ");
     }
   } else {
-    echo "<span class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</span>";
+    echo "<p class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</p>";
   }
 }
 
@@ -171,19 +175,40 @@ function book_seat()
     $conn = connDb();
     $userId = $_POST["userId"];
     $movieId = $_POST["movieId"];
-    $seat = $_POST["seat"];
+    $reserved_seat = $_POST["seat"];
     $date = Date("Y-m-d H:m:s");
 
-    $Rq = "INSERT INTO purchases VALUES('$userId', '$movieId', '$date', '$seat') ;";
+    $Rq = "SELECT * FROM purchases WHERE movieId = '$movieId' AND seat = '$reserved_seat' ;";
     $res = mysqli_query($conn, $Rq);
 
     if (!$res) {
       echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
+    } elseif (mysqli_num_rows($res) > 0) {
+      echo ("<p class='important-error' style='min-height: 40vh'>this seat is already reserved</p>");
     } else {
+      $Rq = "INSERT INTO purchases VALUES('$userId', '$movieId', '$date', '$reserved_seat') ;";
+      $res = mysqli_query($conn, $Rq);
 
-      // ! remove the purchase seat from the movie available seats
+      if (!$res) {
+        echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
+      } else {
+        $Rq = "SELECT * FROM movies WHERE id = '$movieId' ; ";
+        $res = mysqli_query($conn, $Rq);
 
-      echo "<p class='success_purchase' style='min-height: 40vh'>Successfully purchase seat " . $seat . "</p>";
+        $row = mysqli_fetch_array($res);
+        $seats = explode("|", $row["seats"]);
+        unset($seats[array_search($reserved_seat, $seats)]);
+        $seats = implode("|", $seats);
+
+        $Rq = "UPDATE movies SET seats='$seats' WHERE id = '$movieId' ;";
+        $res = mysqli_query($conn, $Rq);
+
+        if (!$res) {
+          echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
+        } else {
+          echo "<p class='success_purchase' style='min-height: 40vh'>Successfully purchase seat " . $reserved_seat . "</p>";
+        }
+      }
     }
     mysqli_close($conn);
   }
@@ -201,7 +226,6 @@ function get_suggested_movies()
   if (!$res) {
     die("Couldn't get movies");
   } elseif (mysqli_num_rows($res) == 0) {
-    // ! get top 10 movies from the database
     getTop10($conn);
   }
 
