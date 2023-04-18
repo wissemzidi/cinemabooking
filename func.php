@@ -129,7 +129,7 @@ function getMovieInfo()
         echo "<p class='important-error'>sorry no seat available right now</p>";
       } else {
         echo ("
-        <form class='hero__buy' name='purchase_seat' method='POST'>
+        <form class='hero__buy' onsubmit=\"return confirm('Are you sure ?')\" name='purchase_seat' method='POST'>
           <input type='text' name='movieId' value='$movieId' hidden>
         ");
         $last_seat_letter = $seats[0][0];
@@ -311,7 +311,8 @@ function getTop10($conn)
 }
 
 
-
+// * adding the sha256 hashing with :
+// hash('sha256', 'TEXT'.$salt);
 function signup()
 {
   if (isset($_POST["reg"])) {
@@ -338,9 +339,14 @@ function signup()
 }
 
 
+// * adding the sha256 hashing with :
+// hash('sha256', 'TEXT'.$salt);
 function signin()
 {
-  if (isset($_POST["reg"])) {
+  session_start();
+  if (isset($_SESSION["userId"])) {
+    header("Location: ../dashboard/dashboard.php");
+  } elseif (isset($_POST["reg"])) {
     $conn = connDb();
     $email = $_POST["email"];
     $password = $_POST["pwd"];
@@ -361,10 +367,29 @@ function signin()
       $_SESSION["email"] = $email;
 
       error_msg("All good :).");
-      header("Location: ../ ");
+      header("Location: ../");
     }
     mysqli_close($conn);
   }
+}
+
+function purchased_movies_nb()
+{
+  if (!isset($_SESSION["userId"])) {
+    header("Location: ../signin/");
+    die();
+  }
+
+  $conn = connDb();
+  $Rq = "SELECT movieId FROM purchases WHERE userId='$_SESSION[userId]' ;";
+  $res = mysqli_query($conn, $Rq);
+
+  if (!$res) {
+    echo "?";
+  } else {
+    echo mysqli_num_rows($res);
+  }
+  mysqli_close($conn);
 }
 
 

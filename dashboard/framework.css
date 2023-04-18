@@ -1,0 +1,447 @@
+/*Box*/
+.d-flex {
+  display: flex;
+}
+
+.d-grid {
+  display: grid;
+}
+
+.justify-c {
+  justify-content: center;
+}
+
+.justify-sb {
+  justify-content: space-between;
+}
+
+.align-c {
+  align-items: center;
+}
+
+.justify-c {
+  justify-content: center;
+  justify-items: center;
+}
+
+.flex-w {
+  flex-wrap: wrap;
+}
+
+.w-fit {
+  width: fit-content;
+}
+
+.h-fit {
+  height: fit-content;
+}
+
+/*end of Box*/
+/* font size and weight */
+.fs-10 {
+  font-size: 10px;
+}
+
+.fs-12 {
+  font-size: 12px;
+}
+
+.fs-13 {
+  font-size: 13px;
+}
+
+.fs-14 {
+  font-size: 14px;
+}
+
+.fs-16 {
+  font-size: 16px;
+}
+
+.fs-18 {
+  font-size: 18px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.fs-24 {
+  font-size: 24px;
+}
+
+.fs-26 {
+  font-size: 26px;
+}
+
+.fs-30 {
+  font-size: 30px;
+}
+
+.fw-lighter {
+  font-weight: 200;
+}
+
+.fw-light {
+  font-weight: 300;
+}
+
+.fw-normal {
+  font-weight: 400;
+}
+
+.fw-bold {
+  font-weight: 500;
+}
+
+.fw-bolder {
+  font-weight: 600;
+}
+/* end font size */
+/*padding and margin*/
+.p-10 {
+  padding: 10px;
+}
+
+.p-5 {
+  padding: 5px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+.p-30 {
+  padding: 30px;
+}
+
+.pb-10 {
+  padding-bottom: 10px;
+}
+
+.pb-20 {
+  padding-bottom: 20px;
+}
+
+.pb-30 {
+  padding-bottom: 30px;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.pt-20 {
+  padding-top: 20px;
+}
+
+.pt-30 {
+  padding-top: 30px;
+}
+
+.pr-10 {
+  padding-right: 10px;
+}
+
+.pr-20 {
+  padding-right: 20px;
+}
+
+.pr-30 {
+  padding-right: 30px;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}
+
+.pl-20 {
+  padding-left: 20px;
+}
+
+.pl-30 {
+  padding-left: 30px;
+}
+
+.m-10 {
+  margin: 10px;
+}
+
+.m-20 {
+  margin: 20px;
+}
+
+.m-30 {
+  margin: 30px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.mr-30 {
+  margin-right: 30px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.ml-30 {
+  margin-left: 30px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+/*end of padding and margin*/
+
+/*opacity*/
+.op-min {
+  opacity: 0.6;
+}
+
+.op-mid {
+  opacity: 0.8;
+}
+
+.op-max {
+  opacity: 1;
+}
+
+.no-list {
+  list-style: none;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+.gap-30 {
+  gap: 30px;
+}
+
+.point {
+  cursor: pointer;
+}
+/*end opacity*/
+/* background - color*/
+.bg-black {
+  background-color: rgb(5, 5, 5);
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-gray {
+  background-color: gray;
+}
+
+.bg-l-gray {
+  background-color: #e6e6e6;
+}
+
+.border-t {
+  border-top: 1px solid lightgrey;
+}
+
+.border {
+  border: 1px solid lightgrey;
+}
+
+.border-l {
+  border: 1px solid var(--clr-light-gray);
+}
+
+.c-font {
+  color: var(--clr-font);
+}
+
+.c-back {
+  color: var(--clr-background);
+}
+
+.c-gray {
+  color: gray;
+}
+
+.c-l-gray {
+  color: lightgrey;
+}
+
+/* end background - color*/
+/* border radius */
+.rad-10 {
+  border-radius: 10px;
+}
+
+.rad-20 {
+  border-radius: 20px;
+}
+
+.rad-50 {
+  border-radius: 50px;
+}
+
+.circle {
+  border-radius: 50%;
+}
+/*end border radius*/
+
+/* text decoration */
+.underline {
+  text-decoration: underline;
+}
+
+.txt-c {
+  text-align: center;
+}
+/* end text decoration */
+.text-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  background-color: white;
+  color: rgba(0, 0, 0, 0.9);
+  border: 1px solid grey;
+  outline: none;
+  border-radius: 50px;
+}
+
+.select-input {
+  padding: 0.3rem 0.1rem;
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  outline: none;
+}
+
+.select-input > * {
+  color: black;
+}
+
+.button {
+  border: none;
+  outline: 1px solid var(--clr-gray);
+  padding-block: 5px;
+  border-radius: 50em;
+  background-color: var(--clr-background);
+  transition: background-color 0.1s ease-out, color 0.1s ease-out;
+}
+.button:where(:hover, :focus-visible) {
+  background-color: var(--clr-gray);
+  color: var(--clr-background);
+}
+
+.input {
+  padding-block: 4px;
+  border-radius: 2em;
+  color: var(--clr-background);
+  border: 1px solid var(--clr-gray);
+  transition: border-radius 0.2s ease-out;
+}
+
+.input:where(:hover, :focus-within) {
+  border-radius: 0.6em;
+}
+
+.checkbox {
+  aspect-ratio: 1;
+  width: 14px;
+}
+/*  */
+/* media theme */
+body[data-theme="dark"] {
+  --clr-background: rgba(0, 0, 0, 0.9);
+  --clr-font: rgba(245, 245, 245, 0.747);
+  --clr-green-800: green;
+  --clr-gray: rgb(65, 65, 65);
+  --clr-light-gray: rgb(107, 107, 107);
+  --clr-gray-300: rgb(128, 128, 128);
+  --clr-gray-100: rgb(90, 90, 90);
+}
+body[data-theme="dark"] .bg-l-gray {
+  background-color: rgb(31, 31, 31);
+}
+body[data-theme="dark"] #aside-list > li {
+  background-color: var(--clr-light-gray);
+}
+/* end media theme */
+
+/* media screen */
+@media screen and (max-width: 500px) {
+  .p-10 {
+    padding: 5px;
+  }
+  .p-20 {
+    padding: 10px;
+  }
+  .p-30 {
+    padding: 15px;
+  }
+  .pr-10 {
+    padding-right: 5px;
+  }
+  .pr-20 {
+    padding-right: 10px;
+  }
+  .pr-30 {
+    padding-right: 15px;
+  }
+  .pl-10 {
+    padding-left: 5px;
+  }
+  .pl-20 {
+    padding-left: 10px;
+  }
+  .pl-30 {
+    padding-left: 15px;
+  }
+  .gap-10 {
+    gap: 5px;
+  }
+  .gap-20 {
+    gap: 10px;
+  }
+  .gap-30 {
+    gap: 15px;
+  }
+}
