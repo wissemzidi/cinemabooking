@@ -35,7 +35,7 @@ function subsMail()
 
 function getAllMovies()
 {
-  $conn = conndb();
+  $conn = connDb();
   $Rq = "SELECT * FROM movies";
   $res = mysqli_query($conn, $Rq);
 
@@ -52,11 +52,6 @@ function getAllMovies()
         echo "<div class='notAvailable page3__movieStatus'></div>";
       }
 
-      // if (str_contains($_SERVER['REQUEST_URI'], "/movie.php")) {
-      //   $dot = "..";
-      // } else {
-      //   $dot = ".";
-      // }
       echo ("
       <div class='page3__movieBtn-container'>
         <a href='./movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
@@ -87,8 +82,8 @@ function getAllMovies()
 function getMovieName()
 {
   if (isset($_GET['movieId'])) {
-    $movieId = $_GET["movieId"];
     $conn = connDb();
+    $movieId = $_GET["movieId"];
     $Rq = "SELECT * FROM movies WHERE id = '$movieId';";
     $Rs = mysqli_query($conn, $Rq);
 
@@ -118,7 +113,6 @@ function getMovieInfo()
       $row = mysqli_fetch_array($res);
       $movieId = $row["id"];
       $movieName = $row["name"];
-      $userId = "6"; // idk how to use cookies in php so...
       $seats = explode("|", $row["seats"]);
 
       echo ("
@@ -136,7 +130,6 @@ function getMovieInfo()
       } else {
         echo ("
         <form class='hero__buy' name='purchase_seat' method='POST'>
-          <input type='text' name='userId' value='$userId' hidden>
           <input type='text' name='movieId' value='$movieId' hidden>
         ");
         $last_seat_letter = $seats[0][0];
@@ -171,9 +164,12 @@ function getMovieInfo()
 
 function book_seat()
 {
-  if (isset($_POST["seat"])) {
+  session_start();
+  if (isset($_POST["seat"]) && !isset($_SESSION["userId"])) {
+    header("Location: ../signin/index.php");
+  } elseif (isset($_POST["seat"])) {
     $conn = connDb();
-    $userId = $_POST["userId"];
+    $userId = $_SESSION["userId"];
     $movieId = $_POST["movieId"];
     $reserved_seat = $_POST["seat"];
     $date = Date("Y-m-d H:m:s");
@@ -227,11 +223,12 @@ function get_suggested_movies()
     die("Couldn't get movies");
   } elseif (mysqli_num_rows($res) == 0) {
     getTop10($conn);
+    return;
   }
 
   $row = mysqli_fetch_array($res);
   $sug_genres = explode("|", $row["genres"]);
-  $id_userd = [];
+  $movies_id = [];
 
   foreach ($sug_genres as $sug_genre) {
     $Rq = "SELECT * FROM movies WHERE genres LIKE '%$sug_genre%' ;";
@@ -239,10 +236,10 @@ function get_suggested_movies()
 
     while ($row = mysqli_fetch_array($res)) {
       $movieId = $row["id"];
-      if ($pageMovieId == $movieId || in_array($movieId, $id_userd)) {
+      if ($pageMovieId == $movieId || in_array($movieId, $movies_id)) {
         continue;
       }
-      array_push($id_userd, $movieId);
+      array_push($movies_id, $movieId);
       $movieName = $row["name"];
       echo "<div class='page3__card'>";
       echo "<h4 class='page3__movieName'>$movieName</h4>";
@@ -332,7 +329,6 @@ function signup()
       if (!$res) {
         error_msg("something went wrong, please try again later");
       } else {
-        echo "signed in successfully as $username";
         header("Location: ../signin/");
       }
     } else {
@@ -352,13 +348,22 @@ function signin()
     $res = mysqli_query($conn, $Rq);
 
     if (mysqli_num_rows($res) == 0) {
-      global $error_msg;
-      $error_msg = "Those credential are wrong.";
+      error_msg("Those credential are wrong.");
     } else {
-      global $error_msg;
-      $error_msg = "All good :).";
+      $row = mysqli_fetch_array($res);
+      $id = $row["id"];
+      $username = $row["username"];
+
+      session_set_cookie_params(86400 * 30);
+      session_start();
+      $_SESSION["userId"] = $id;
+      $_SESSION["username"] = $username;
+      $_SESSION["email"] = $email;
+
+      error_msg("All good :).");
       header("Location: ../ ");
     }
+    mysqli_close($conn);
   }
 }
 

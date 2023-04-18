@@ -79,7 +79,7 @@ if (isset($_COOKIE["admin_token"])) {
             <img class="hero_card_img" width="50" src="./plus.svg" alt="">
           </div>
         </div>
-        <div class="hero_card_main" hidden>
+        <div class="hero_card_main">
           <form method="POST" id="add_movie_form" name="add_movie_form">
             <div>
               <input type="text" class="login_input" name="name" id="name" placeholder="Name">
