@@ -75,12 +75,13 @@ body {
 }
 
 #return__btn {
+  padding: 0.25rem;
   position: absolute;
   top: 0.25rem;
   left: 0.25rem;
   text-decoration: none;
   border-radius: 10px;
-  filter: invert(1);
+  rotate: 0.5turn;
 }
 
 #return__btn img {

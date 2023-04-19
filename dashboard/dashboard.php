@@ -2,7 +2,10 @@
 $error_msg = "";
 require "../func.php";
 session_start();
+if (!isset($_SESSION["userId"])) header("Location: ../index.php");
 isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
+$logout_msg = "";
+logout();
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +16,7 @@ isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./framework.css" />
+  <link rel="icon" type="image/x-icon" href="../icons/logo.svg">
   <link rel="stylesheet" href="./dashboard.css" />
   <script src="./dashboard.js" defer></script>
   <title><?php echo $selected_page ?></title>
@@ -68,116 +72,93 @@ isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
     <?php
     if ($selected_page == "settings") {
       echo ("
-    <section class='page' id='settings-page' style='width: 100%'>
-      <form id='content' class='pr-20 pl-20' method='POST'>
-        <article id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-          <h2 class='txt-c fw-light pb-10'>Privacy</h2>
-          <div class='pb-10 pt-10'>
-            number of devices with this account :
-            <span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
+    <section class='page pr-20 pl-20' id='settings-page' style='width: 100%'>
+      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+        <h2 class='txt-c fw-light pb-10'>Privacy</h2>
+        <div class='pb-10 pt-10'>
+          number of devices with this account :
+          <span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
+        </div>
+        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+          <span style='letter-spacing: -0.5px'> Show Email </span>
+          <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
+          <div class='toggle-switch'>
+            <div class='toggle-switch_inner'></div>
           </div>
-          <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'> Show phone number </span>
-            <input class='toggle-input' type='checkbox' name='show-tel' hidden />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-          <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'> Show Email </span>
-            <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-        </article>
-        <article id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-          <h2 class='txt-c fw-light pb-10'>Appearance</h2>
-          <div class='pb-10 pt-10'>
-            current theme :
-            <span class='c-white bg-gray rad-50 pr-10 pl-10'>Light</span>
-          </div>
-          <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'> Dark theme </span>
-            <input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-          <div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'> Hide main page </span>
-            <input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-          <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <label for='font-size' class='fs-14'>change font size : </label>
-            <select name='font-size' id='font-size' class='select-input'>
-              <option selected value='mid'>Medium (Recommended)</option>
-              <option value='min'>Minimum</option>
-              <option value='max'>Maximum</option>
-            </select>
-          </div>
-        </article>
-        <article id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-          <h2 class='txt-c fw-light pb-10'>Policy</h2>
-          <div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'> MIT license </span>
-            <input class='toggle-input' type='checkbox' name='license' hidden />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-          <center class='border-t pt-10'>
-            <span class='op-min'>
-              Permission is hereby granted, free of charge, to any person
-              obtaining a copy of this software and associated documentation
-              files (the 'Software'), to deal in the Software without
-              restriction, including without limitation the rights to use,
-              copy, modify, merge, publish, distribute, sublicense, and/or
-              sell copies of the Software, and to permit persons to whom the
-              Software is furnished to do so,
-            </span>
-          </center>
-        </article>
-        <article id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-          <h2 class='txt-c fw-light pb-10'>Payment</h2>
-          <div class='pb-10 pt-10'>
-            current way :
-            <span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
-          </div>
-          <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <span style='letter-spacing: -0.5px'>show payment method</span>
-            <input class='toggle-input' type='checkbox' name='dark-theme' hidden />
-            <div class='toggle-switch'>
-              <div class='toggle-switch_inner'></div>
-            </div>
-          </div>
-          <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-            <label for='font-size' class='fs-14'>change Payment method</label>
-            <select name='font-size' id='font-size' class='select-input'>
-              <option selected value='mid'>PayPal</option>
-              <option value='min'>Master Card</option>
-              <option value='max'>Visa</option>
-              <option value='max'>Ali pay</option>
-            </select>
-          </div>
-          <center class='pt-10 border-t'>
-            <span class='op-min'>
-              All your banking info and transactions info are safe
-            </span>
-          </center>
-        </article>
-        <div id='submit-btn-container' class='pt-30 d-flex'>
-          <button id='submit-btn' type='submit'>
+        </div>
+        <div class='submit-btn-container' class='pt-30 d-flex'>
+          <button class='submit-btn' type='submit'>
             Save
           </button>
         </div>
       </form>
+      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+        <h2 class='txt-c fw-light pb-10'>Appearance</h2>
+        <div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
+          <span style='letter-spacing: -0.5px'> Website animations </span>
+          <input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
+          <div class='toggle-switch'>
+            <div class='toggle-switch_inner'></div>
+          </div>
+        </div>
+        <div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
+          <span style='letter-spacing: -0.5px'> Hide main page on enter </span>
+          <input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
+          <div class='toggle-switch'>
+            <div class='toggle-switch_inner'></div>
+          </div>
+        </div>
+        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+          <label for='font-size' class='fs-14'>change font size : </label>
+          <select name='font-size' id='font-size' class='select-input'>
+            <option selected value='mid'>Medium (Recommended)</option>
+            <option value='min'>Minimum</option>
+            <option value='max'>Maximum</option>
+          </select>
+        </div>
+        <div class='submit-btn-container' class='pt-30 d-flex'>
+          <button class='submit-btn' type='submit'>
+            Save
+          </button>
+        </div>
+      </form>
+      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+        <h2 class='txt-c fw-light pb-10'>Payment</h2>
+        <div class='pb-10 pt-10'>
+          you are paying using :
+          <span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
+        </div>
+        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+          <span style='letter-spacing: -0.5px'>show payment method</span>
+          <input class='toggle-input' type='checkbox' name='dark-theme' hidden />
+          <div class='toggle-switch'>
+            <div class='toggle-switch_inner'></div>
+          </div>
+        </div>
+        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+          <label for='font-size' class='fs-14'>Warn me before paying</label>
+          <select name='font-size' id='font-size' class='select-input'>
+            <option selected value='payPal'>PayPal</option>
+            <option value='masterCard'>Master Card</option>
+            <option value='visa'>Visa</option>
+            <option value='aliPay'>Ali pay</option>
+          </select>
+        </div>
+        <div class='submit-btn-container' class='pt-30 d-flex'>
+          <button class='submit-btn' type='submit'>
+            Save
+          </button>
+        </div>
+        <center class='pt-10 border-t'>
+          <span class='op-min'>
+            All your banking info and transactions info are secure.
+          </span>
+        </center>
+      </form>
     </section>
       ");
     } else if ($selected_page == "purchases") {
+      delete_movie();
       echo ("
     <section class='page' id='purchases-page' style='width: 100%'>
       <article id='content' class='border-l rad-20 p-20 pt-10'>
@@ -205,20 +186,40 @@ isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
       <form name='username_form' class='account-page__form' method='POST'>
         <label for='name_input'><h3>Change Username : </h3></label>
         <input class='text-input' type='text' name='name' id='name_input' placeholder='New Username' />
-        <input class='text-input' type='text' name='confirm_name' id='' placeholder='Confirm Username' />
-        <button class='submit-btn' type='submit'>Change</button>
+        <input class='text-input' type='text' name='confirm_name' id='confirm_name_input' placeholder='Confirm Username' />
+        ");
+      change_username();
+      echo ("
+        <button class='submit-btn' name='username_submit' type='submit'>Change</button>
       </form>
       <form name='email_form' class='account-page__form' method='POST'>
         <label for='email_input'><h3>Change Email : </h3></label>
         <input class='text-input' type='text' name='email' id='email_input' placeholder='New Email' />
-        <input class='text-input' type='text' name='confirm_email' id='' placeholder='Confirm Email' />
-        <button class='submit-btn' type='submit'>Change</button>
+        <input class='text-input' type='text' name='confirm_email' id='confirm_email_input' placeholder='Confirm Email' />
+        ");
+      change_email();
+      echo ("
+        <button class='submit-btn' name='email_submit' type='submit'>Change</button>
       </form>
       <form name='password_form' class='account-page__form' method='POST'>
         <label for='password_input'><h3>Change Password : </h3></label>
         <input class='text-input' type='text' name='password' id='password_input' placeholder='New Password' />
-        <input class='text-input' type='text' name='confirm_password' id='' placeholder='Confirm Password' />
-        <button class='submit-btn' type='submit'>Change</button>
+        <input class='text-input' type='text' name='confirm_password' id='confirm_pwd_input' placeholder='Confirm Password' />
+        ");
+      change_pwd();
+      echo ("
+        <button class='submit-btn' name='password_submit' type='submit'>Change</button>
+      </form>
+      <form name='log_out' class='account-page__form log_out_form' method='POST'>
+        <button class='submit-btn' name='log_out_btn' type='submit'>
+          <img width='30' src='./icons/logout.svg' alt=''>
+          <h3>Logout</h3>
+        </button>
+        <p class='important_error'>
+      ");
+      echo $logout_msg;
+      echo ("
+        </p>
       </form>
     </section>
       ");
@@ -230,48 +231,122 @@ isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
 
 <?php
 // delete movie
-if (isset($_POST['delete_btn'])) {
-  $conn = connDb();
-  $user_id = $_SESSION["userId"];
-  $movie_id = $_POST["deleted_movieId"];
-  $deleted_seat = $_POST["deleted_seat"];
 
-  $Rq = "SELECT seats FROM movies WHERE id='$movie_id' ;";
-  $res = mysqli_query($conn, $Rq);
+function delete_movie()
+{
+  if (isset($_POST['delete_btn'])) {
+    $conn = connDb();
+    $user_id = $_SESSION["userId"];
+    $movie_id = $_POST["deleted_movieId"];
+    $deleted_seat = $_POST["deleted_seat"];
 
-  if (!$res) {
-    error_msg("Error in getting the seats in movies db, please try again later.");
-  } else {
-    $row = mysqli_fetch_array($res);
-    $seats = explode("|", $row["seats"]);
-    for ($i = 0; $i < count($seats); $i++) {
-      if ($i == count($seats) - 1) {
-        array_push($seats, $deleted_seat);
-        break;
-      } elseif ($deleted_seat < $seats[$i]) {
-        array_splice($seats, $i, 0, $deleted_seat);
-        break;
-      }
-    }
-    $seats = implode("|", $seats);
-    $Rq = "UPDATE movies SET seats='$seats' WHERE id='$movie_id' ;";
+    $Rq = "SELECT seats FROM movies WHERE id='$movie_id' ;";
     $res = mysqli_query($conn, $Rq);
 
     if (!$res) {
-      error_msg("Error in updating the seats in movies db, please try again later.");
+      error_msg("Error in getting the seats in movies db, please try again later.");
     } else {
-      $Rq = "DELETE FROM purchases WHERE movieId='$movie_id' AND userId='$user_id' AND seat='$deleted_seat' ;";
+      $row = mysqli_fetch_array($res);
+      $seats = explode("|", $row["seats"]);
+      for ($i = 0; $i < count($seats); $i++) {
+        if ($i == count($seats) - 1) {
+          array_push($seats, $deleted_seat);
+          break;
+        } elseif ($deleted_seat < $seats[$i]) {
+          array_splice($seats, $i, 0, $deleted_seat);
+          break;
+        }
+      }
+      $seats = implode("|", $seats);
+      $Rq = "UPDATE movies SET seats='$seats' WHERE id='$movie_id' ;";
       $res = mysqli_query($conn, $Rq);
 
       if (!$res) {
-        error_msg("Error in deleting the movie from purchases db, please try again later.");
+        error_msg("Error in updating the seats in movies db, please try again later.");
       } else {
-        error_msg("purchase deleted successfully");
+        $Rq = "DELETE FROM purchases WHERE movieId='$movie_id' AND userId='$user_id' AND seat='$deleted_seat' ;";
+        $res = mysqli_query($conn, $Rq);
+
+        if (!$res) {
+          error_msg("Error in deleting the movie from purchases db, please try again later.");
+        } else {
+          error_msg("purchase deleted successfully");
+        }
       }
     }
+    mysqli_close($conn);
   }
-  mysqli_close($conn);
 }
+
+
+// change username/email/password
+function change_username()
+{
+  if (isset($_POST["username_submit"])) {
+    $user_id = $_SESSION["userId"];
+    $new_name = $_POST["name"];
+    $confirm_name = $_POST["confirm_name"];
+
+    if ($new_name != $confirm_name) {
+      echo "<span class='error'>the confirmation is wrong.</span>";
+    } else {
+      $conn = connDb();
+      $stmt = mysqli_prepare($conn, "UPDATE users SET username=? WHERE id=?");
+      $stmt->bind_param("ss", $new_name, $user_id);
+      if ($stmt->execute()) {
+        echo "<span class='success'>Username successfully changed.</span>";
+      } else {
+        echo "<span class='error'>Error, try again.</span>";
+      }
+      mysqli_close($conn);
+    }
+  }
+}
+function change_email()
+{
+  if (isset($_POST["email_submit"])) {
+    $user_id = $_SESSION["userId"];
+    $new_email = $_POST["email"];
+    $confirm_email = $_POST["confirm_email"];
+
+    if ($new_email != $confirm_email) {
+      echo "<span class='error'>the confirmation is wrong.</span>";
+    } else {
+      $conn = connDb();
+      $stmt = mysqli_prepare($conn, "UPDATE users SET email=? WHERE id=?");
+      $stmt->bind_param("ss", $new_email, $user_id);
+      if ($stmt->execute()) {
+        echo "<span class='success'>Email successfully changed.</span>";
+      } else {
+        echo "<span class='error'>Error, try again.</span>";
+      }
+      mysqli_close($conn);
+    }
+  }
+}
+function change_pwd()
+{
+  if (isset($_POST["password_submit"])) {
+    $user_id = $_SESSION["userId"];
+    $new_pwd = $_POST["password"];
+    $confirm_pwd = $_POST["confirm_password"];
+
+    if ($new_pwd != $confirm_pwd) {
+      echo "<span class='error'>the confirmation is wrong.</span>";
+    } else {
+      $conn = connDb();
+      $stmt = mysqli_prepare($conn, "UPDATE users SET password=? WHERE id=?");
+      $stmt->bind_param("ss", $new_pwd, $user_id);
+      if ($stmt->execute()) {
+        echo "<span class='success'>Password successfully changed.</span>";
+      } else {
+        echo "<span class='error'>Error, try again.</span>";
+      }
+      mysqli_close($conn);
+    }
+  }
+}
+
 
 function get_purchased_movies()
 {

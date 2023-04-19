@@ -42,12 +42,12 @@ require "./func.php";
       <nav class="aside__nav" aria-label="side bar">
         <ul class="aside__ul">
           <div>
-            <li><a href="#header">Home</a></li>
-            <li><a href="#section2">About Me</a></li>
+            <li><a href="./index.php">Home</a></li>
+            <li><a href="./signin/index.php">Account</a></li>
           </div>
           <div>
-            <li><a href="#section3">Work</a></li>
-            <li><a href="#footer">Contact</a></li>
+            <li><a href="#page3">Movies</a></li>
+            <li><a href="#footer">Info</a></li>
           </div>
         </ul>
       </nav>
@@ -60,7 +60,7 @@ require "./func.php";
   <header>
     <div>
       <a href="#">
-        <img width="40" src="./icons/logo(dark).png" title="cinema booking" alt="">
+        <img width="35" src="./icons/logo.svg" title="cinema booking" alt="">
       </a>
       <h1 id="page-main-title">Cinema Booking</h1>
     </div>

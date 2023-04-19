@@ -32,7 +32,7 @@ $error_msg = "";
     <?php signin() ?>
     <form name="signin_form" id="login" method="POST">
       <a href="../index.php" id="return__btn">
-        <img height="20" src="./icons/return.svg" alt=">" />
+        <img height="25" src="../icons/back.svg" alt=">" />
       </a>
       <div id="login__input">
         <div id="login__input__container">

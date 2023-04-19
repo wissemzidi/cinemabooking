@@ -170,23 +170,12 @@ header h1 {
 #purchases-page #content {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  max-width: 92%;
   gap: 1rem;
 }
 
-#content > #movies-box {
-  max-width: 92%;
-}
-
-#content > #notifications-box {
-  max-width: 92%;
-}
-
-@media screen and (max-width: 1400px) {
+@media (max-width: 1400px) {
   #content > #movies-box {
-    max-width: 100%;
-  }
-  #content > #notifications-box {
     max-width: 100%;
   }
 }
@@ -206,7 +195,16 @@ header h1 {
 }
 
 #settings-page {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
   animation: slide_in 0.5s ease-out forwards;
+}
+
+#settings-page form {
+  min-width: 40%;
+  max-width: 35rem;
+  flex-grow: 1;
 }
 
 .toggle-switch {
@@ -240,23 +238,25 @@ header h1 {
   border-color: var(--clr-green-800);
 }
 
-#submit-btn {
-  position: fixed;
-  right: 0;
-  top: 0;
-  translate: 20% -100%;
-  background-color: green;
-  color: #eee;
+.submit-btn-container {
+  display: flex;
+  align-items: end;
+  padding-block: 1.5rem;
+}
+
+.submit-btn {
   margin-left: auto;
-  margin-right: 10%;
   padding: 0.4rem 0.7rem;
   font-size: 1.2rem;
   border: none;
   border-radius: 50px;
+  background-color: green;
+  color: #eee;
   cursor: pointer;
   transition: 0.2s ease-out scale;
 }
-#submit-btn:where(:hover, :focus-visible) {
+
+.submit-btn:where(:hover, :focus-visible) {
   scale: 1.05;
 }
 
@@ -454,10 +454,15 @@ header h1 {
   padding-inline: 1.45rem;
 }
 
-#notifications-box .notification {
-  min-width: 30%;
-  max-width: 33rem;
-  flex-grow: 1;
+.log_out_form {
+  padding-top: 2rem;
+  justify-content: center;
+}
+
+.log_out_form .submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @keyframes slide_in {
@@ -491,4 +496,28 @@ header h1 {
     opacity: 1;
     translate: 0;
   }
+}
+
+.important_success {
+  font-size: 1.25rem;
+  color: green;
+  text-align: center;
+}
+
+.success {
+  font-size: 1rem;
+  color: green;
+  text-align: center;
+}
+
+.important_error {
+  font-size: 1.25rem;
+  color: red;
+  text-align: center;
+}
+
+.error {
+  font-size: 1rem;
+  color: red;
+  text-align: center;
 }

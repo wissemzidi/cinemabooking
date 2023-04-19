@@ -3,7 +3,6 @@ const sideBarText = document.querySelectorAll(".hide-600");
 const nav = document.querySelector("nav");
 
 showAside.addEventListener("click", () => {
-  let sideBarCurr = showAside.getAttribute("data-active");
   if (showAside.getAttribute("data-active") === "true") {
     showAside.setAttribute("data-active", false);
     sideBarText.forEach((ele) => {

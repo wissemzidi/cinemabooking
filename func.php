@@ -393,6 +393,24 @@ function purchased_movies_nb()
 }
 
 
+// logout
+function logout()
+{
+  if (isset($_POST['log_out_btn'])) {
+    global $logout_msg;
+    $logout_msg = "my name is wissem";
+    if (!session_destroy()) {
+      $logout_msg = "Error when logging out !";
+    } else {
+      // $logout_msg = "ALL GOOD";
+      // header("Location : ../index.php");
+      echo "<script>window.location.href='../index.php';</script>";
+      exit;
+    }
+  }
+}
+
+
 function error_msg($msg)
 {
   global $error_msg;
