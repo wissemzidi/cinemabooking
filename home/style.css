@@ -538,7 +538,7 @@ main {
 
 .res {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #00a3ff;
   padding: 0.2rem;
 }
@@ -602,16 +602,13 @@ main {
   padding: 0.4rem 0.8rem;
   outline: none;
   border: none;
-  border-left: 1px solid black;
-  background-color: transparent;
+  border-left: 1px solid #0d53aa;
+  background-color: #0d53aa;
+  color: white;
   font-size: 1rem;
   font-weight: lighter;
   cursor: pointer;
-  transition: background-color 0.2s ease-out, color 0.2s ease-out;
-}
-.input-container button:is(:hover, :focus-within) {
-  background-color: red;
-  color: white;
+  transition: background-color 0.2s ease-out;
 }
 
 #page3 {

@@ -151,7 +151,7 @@ logout();
         </div>
         <center class='pt-10 border-t'>
           <span class='op-min'>
-            All your banking info and transactions info are secure.
+            All your banking and payment info are not secure :)
           </span>
         </center>
       </form>

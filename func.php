@@ -3,9 +3,12 @@
 function connDb()
 {
   require "conn.php";
-  $conn = mysqli_connect($conn_server, $conn_username, $conn_pwd);
-  mysqli_select_db($conn, $db);
-  return $conn;
+  $conn = new mysqli($conn_server, $conn_username, $conn_pwd, $db);
+  if (!$conn) {
+    die("<p class='important_error error'>Error when connecting to database. please report this error and try again later</p>");
+  } else {
+    return $conn;
+  }
 }
 
 
@@ -13,67 +16,83 @@ function subsMail()
 {
   $conn = connDb();
   $email = $_POST["email"];
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo "<span class='important_error error'>Invalid email format.</span>";
+    return;
+  }
+  // css to go to the input field directly without smooth scrolling
+  echo "<style>body {scroll-behavior: auto;}</style>";
+  // js script to go to the input field
+  echo "<script>window.location.href='./index.php#page2';</script>";
 
-  $Rq = "SELECT * FROM mailsubscribers WHERE email='$email' ;";
-  $res = mysqli_query($conn, $Rq);
+  $stmt = $conn->prepare("SELECT * FROM mailsubscribers WHERE email=? ;");
+  $stmt->bind_param('s', $email);
 
-  if (mysqli_num_rows($res) > 0) {
-    return "user already exist";
+  if (!$stmt->execute()) {
+    echo "<span class='important_error error'>Server Error, please try again later.</span>";
   } else {
-    $Rq = "INSERT INTO mailsubscribers value('', '$email')";
-    $res = mysqli_query($conn, $Rq);
-
-    if (!$res) {
-      return "server error, try again later";
+    if ($stmt->get_result()->num_rows > 0) {
+      echo "<span class='important_error error'>User already exist.</span>";
     } else {
-      return "subscription successfully";
+      $stmt = $conn->prepare("INSERT INTO mailsubscribers VALUES ('', ?)");
+      $stmt->bind_param('s', $email);
+      if (!$stmt->execute()) {
+        mysqli_close($conn);
+        echo "<span class='important_error error'>Server Error, please try again later.</span>";
+      } else {
+        echo "<span class='important_error error'>Subscribed successfully.</span>";
+      }
     }
   }
-  mysqli_close($conn);
+  $conn->close();
 }
 
 
 function getAllMovies()
 {
   $conn = connDb();
-  $Rq = "SELECT * FROM movies";
-  $res = mysqli_query($conn, $Rq);
-
-  if (mysqli_num_rows($res) > 0) {
-    while ($row = mysqli_fetch_array($res)) {
-      $movieId = $row["id"];
-      $movieName = $row["name"];
-      echo "<div class='page3__card'>";
-      echo "<h4 class='page3__movieName'>$movieName</h4>";
-      echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
-      if (strlen($row["seats"]) > 1) {
-        echo "<div class='available page3__movieStatus'></div>";
-      } else {
-        echo "<div class='notAvailable page3__movieStatus'></div>";
-      }
-
-      echo ("
-      <div class='page3__movieBtn-container'>
-        <a href='./movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
-          <img src='./icons/play.svg' width='50%' alt='Watch Now'>
-        </a>
-      </div>
-      ");
-      $genres = explode("|", $row["genres"]);
-      echo ("
-      <div class='page3__genres-container'>
-      ");
-      array_map(function ($genre) {
-        echo "<span class='genre'>$genre</span>";
-      }, $genres);
-      echo ("
-      </div>
-      ");
-
-      echo "</div>";
-    }
+  $sql = "SELECT * FROM movies";
+  $stmt = $conn->prepare($sql);
+  if (!$stmt->execute()) {
+    echo "<p class='error important_error'>execution ERROR, please try again later.</p>";
   } else {
-    echo "<span class='error'>Sorry, no movies available right now</span>";
+    $res = $stmt->get_result();
+
+    if ($stmt->affected_rows > 0) {
+      while ($row = $res->fetch_array()) {
+        $movieId = $row["id"];
+        $movieName = $row["name"];
+        echo "<div class='page3__card'>";
+        echo "<h4 class='page3__movieName'>$movieName</h4>";
+        echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
+        if (strlen($row["seats"]) > 1) {
+          echo "<div class='available page3__movieStatus'></div>";
+        } else {
+          echo "<div class='notAvailable page3__movieStatus'></div>";
+        }
+        echo ("
+        <div class='page3__movieBtn-container'>
+          <a href='./movie/movie.php?movieId=$movieId' class='page3__movieBtn'>
+            <img src='./icons/play.svg' width='50%' alt='Watch Now'>
+          </a>
+        </div>
+        ");
+        $genres = explode("|", $row["genres"]);
+        echo ("
+        <div class='page3__genres-container'>
+        ");
+        array_map(function ($genre) {
+          echo "<span class='genre'>$genre</span>";
+        }, $genres);
+        echo ("
+        </div>
+        ");
+
+        echo "</div>";
+      }
+    } else {
+      echo "<span class='error'>Sorry, no movies available right now</span>";
+    }
   }
   mysqli_close($conn);
 }
@@ -83,16 +102,14 @@ function getMovieName()
 {
   if (isset($_GET['movieId'])) {
     $conn = connDb();
-    $movieId = $_GET["movieId"];
-    $Rq = "SELECT * FROM movies WHERE id = '$movieId';";
-    $Rs = mysqli_query($conn, $Rq);
-
-    if (!$Rs) {
+    $stmt = $conn->prepare("SELECT * FROM movies WHERE id =?;");
+    $stmt->bind_param('s', $_GET["movieId"]);
+    if (!$stmt->execute()) {
       echo "About Movie";
     } else {
-      $row = mysqli_fetch_array($Rs);
-      echo "$row[name]";
+      echo $stmt->get_result()->fetch_array()["name"];
     }
+    mysqli_close($conn);
   } else {
     echo "About Movie";
   }
@@ -103,59 +120,57 @@ function getMovieInfo()
 {
   if (isset($_GET['movieId'])) {
     $conn = connDb();
-    $movieId = $_GET["movieId"];
-    $Rq = "SELECT * FROM movies WHERE id = '$movieId' ;";
-    $res = mysqli_query($conn, $Rq);
-
-    if (!$res) {
+    $stmt = $conn->prepare("SELECT * FROM movies WHERE id=? ;");
+    $stmt->bind_param("s", $_GET["movieId"]);
+    if (!$stmt->execute()) {
       echo "<span class='important-error' style='min-height: 40vh'>The server isn't responding please try again later.</span>";
+      mysqli_close($conn);
+      return;
+    }
+    $row = $stmt->get_result()->fetch_array();
+    $movieId = $row["id"];
+    $movieName = $row["name"];
+    $seats = explode("|", $row["seats"]);
+    echo ("
+    <div class='hero__left'>
+      <img class='hero__moviePic' width='100%' src='$row[pic]'>
+    </div>
+    ");
+    echo ("
+    <div class='hero__right'>
+      <h2 class='hero__movieName'>$movieName</h2>
+      <p class='hero__description'> $row[description] </p>
+    ");
+    if (count($seats) == 0 || $seats[0] == "") {
+      echo "<p class='important-error'>sorry no seat available right now</p>";
     } else {
-      $row = mysqli_fetch_array($res);
-      $movieId = $row["id"];
-      $movieName = $row["name"];
-      $seats = explode("|", $row["seats"]);
-
       echo ("
-      <div class='hero__left'>
-        <img class='hero__moviePic' width='100%' src='$row[pic]'>
-      </div>
+      <form class='hero__buy' onsubmit=\"return confirm('Are you sure ?')\" name='purchase_seat' method='POST'>
+        <input type='text' name='movieId' value='$movieId' hidden>
       ");
-      echo ("
-      <div class='hero__right'>
-        <h2 class='hero__movieName'>$movieName</h2>
-        <p class='hero__description'> $row[description] </p>
-      ");
-      if (count($seats) == 0 || $seats[0] == "") {
-        echo "<p class='important-error'>sorry no seat available right now</p>";
-      } else {
-        echo ("
-        <form class='hero__buy' onsubmit=\"return confirm('Are you sure ?')\" name='purchase_seat' method='POST'>
-          <input type='text' name='movieId' value='$movieId' hidden>
-        ");
-        $last_seat_letter = $seats[0][0];
-        echo "<div class='hero__buy_row'>";
-        foreach ($seats as $seat) {
-          $last_seat_letter[0] != $seat[0] ? $new_row = true : $new_row = false;
-          if ($new_row) {
-            $last_seat_letter = $seat[0];
-            echo ("
-            </div>
-            <div class='hero__buy_row'>
-            ");
-          }
+      $last_seat_letter = $seats[0][0];
+      echo "<div class='hero__buy_row'>";
+      foreach ($seats as $seat) {
+        $last_seat_letter[0] != $seat[0] ? $new_row = true : $new_row = false;
+        if ($new_row) {
+          $last_seat_letter = $seat[0];
           echo ("
-            <button type='submit' name='seat' value='$seat' class='buy_seat_btn'>$seat</button>
+          </div>
+          <div class='hero__buy_row'>
           ");
         }
-        echo ("</form>");
+        echo ("
+          <button type='submit' name='seat' value='$seat' class='buy_seat_btn'>$seat</button>
+        ");
       }
-      echo ("
-      </div>
-      ");
-      echo ("
-      </div>
-      ");
+      echo ("</form>");
     }
+    echo ("
+    </div>
+    ");
+    echo ("
+    </div>
+    ");
   } else {
     echo "<p class='important-error' style='min-height: 40vh'>No movie was selected, please select one.</p>";
   }
@@ -174,37 +189,50 @@ function book_seat()
     $reserved_seat = $_POST["seat"];
     $date = Date("Y-m-d H:m:s");
 
-    $Rq = "SELECT * FROM purchases WHERE movieId = '$movieId' AND seat = '$reserved_seat' ;";
-    $res = mysqli_query($conn, $Rq);
-
-    if (!$res) {
-      echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
-    } elseif (mysqli_num_rows($res) > 0) {
+    // check if the seat is purchases before
+    $stmt = $conn->prepare("SELECT * FROM purchases WHERE movieId=? AND seat=? ;");
+    $stmt->bind_param("ss", $movieId, $reserved_seat);
+    if (!$stmt->execute()) {
+      echo "<p class='important-error' style='min-height: 40vh'>Your purchase wasn't completed successfully. please try later</p>";
+      mysqli_close($conn);
+      return;
+    }
+    if ($stmt->get_result()->num_rows > 0) {
       echo ("<p class='important-error' style='min-height: 40vh'>this seat is already reserved</p>");
+      mysqli_close($conn);
+      return;
+    }
+
+    // insert the purchase
+    $stmt = $conn->prepare("INSERT INTO purchases VALUES(?, ?, ?, ?) ;");
+    $stmt->bind_param("ssss", $userId, $movieId, $date, $reserved_seat);
+    if (!$stmt->execute()) {
+      echo "<p class='important-error' style='min-height: 40vh'>Your purchase wasn't completed successfully. please try later</p>";
+      mysqli_close($conn);
+      return;
+    }
+
+    // remove the purchased seat from the movie seats.
+    $stmt = $conn->prepare("SELECT * FROM movies WHERE id=? ; ");
+    $stmt->bind_param("s", $movieId);
+    if (!$stmt->execute()) {
+      echo "<p class='error' style='min-height: 40vh'>Error when querying the seat, please check if the seat is purchased successfully</p>";
+      mysqli_close($conn);
+      return;
+    }
+    $seats = explode("|", $stmt->get_result()->fetch_array()["seats"]);
+    unset($seats[array_search($reserved_seat, $seats)]);
+    $seats = implode("|", $seats);
+
+    // push the new seats update to the movie.
+    $stmt = $conn->prepare("UPDATE movies SET seats=? WHERE id=? ;");
+    $stmt->bind_param("ss", $seats, $movieId);
+    if (!$stmt->execute()) {
+      echo "<p class='error' style='min-height: 40vh'>Error when updating the seats, please check if the seat is purchased successfully</p>";
+      mysqli_close($conn);
+      return;
     } else {
-      $Rq = "INSERT INTO purchases VALUES('$userId', '$movieId', '$date', '$reserved_seat') ;";
-      $res = mysqli_query($conn, $Rq);
-
-      if (!$res) {
-        echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
-      } else {
-        $Rq = "SELECT * FROM movies WHERE id = '$movieId' ; ";
-        $res = mysqli_query($conn, $Rq);
-
-        $row = mysqli_fetch_array($res);
-        $seats = explode("|", $row["seats"]);
-        unset($seats[array_search($reserved_seat, $seats)]);
-        $seats = implode("|", $seats);
-
-        $Rq = "UPDATE movies SET seats='$seats' WHERE id = '$movieId' ;";
-        $res = mysqli_query($conn, $Rq);
-
-        if (!$res) {
-          echo "<p class='important-error' style='min-height: 40vh'>Your purchase isn't successfully. please try later</p>";
-        } else {
-          echo "<p class='success_purchase' style='min-height: 40vh'>Successfully purchase seat " . $reserved_seat . "</p>";
-        }
-      }
+      echo "<p class='success_purchase' style='min-height: 30vh'>Successfully purchase seat " . $reserved_seat . "</p>";
     }
     mysqli_close($conn);
   }
@@ -216,29 +244,24 @@ function get_suggested_movies()
 {
   $conn = conndb();
   $pageMovieId = $_GET["movieId"];
-  $Rq = "SELECT genres FROM movies WHERE id = '$pageMovieId'; ";
-  $res = mysqli_query($conn, $Rq);
-
-  if (!$res) {
-    die("Couldn't get movies");
-  } elseif (mysqli_num_rows($res) == 0) {
-    getTop10($conn);
+  $stmt = $conn->prepare("SELECT genres FROM movies WHERE id=? ;");
+  $stmt->bind_param("s", $pageMovieId);
+  if (!$stmt->execute()) {
+    // if query failed get the top 10 movies
+    getTop10();
+    mysqli_close($conn);
     return;
   }
-
-  $row = mysqli_fetch_array($res);
-  $sug_genres = explode("|", $row["genres"]);
+  $res = $stmt->get_result();
+  $sug_genres = explode("|", $res->fetch_array()["genres"]);
   $movies_id = [];
 
   foreach ($sug_genres as $sug_genre) {
-    $Rq = "SELECT * FROM movies WHERE genres LIKE '%$sug_genre%' ;";
-    $res = mysqli_query($conn, $Rq);
-
-    while ($row = mysqli_fetch_array($res)) {
+    $sug_genre = $conn->real_escape_string($sug_genre);
+    $res = $conn->query("SELECT * FROM movies WHERE genres LIKE '%$sug_genre%' ;");
+    while ($row = $res->fetch_array()) {
       $movieId = $row["id"];
-      if ($pageMovieId == $movieId || in_array($movieId, $movies_id)) {
-        continue;
-      }
+      if ($pageMovieId == $movieId || in_array($movieId, $movies_id)) continue;
       array_push($movies_id, $movieId);
       $movieName = $row["name"];
       echo "<div class='page3__card'>";
@@ -269,16 +292,21 @@ function get_suggested_movies()
       echo "</div>";
     }
   }
+
+  // if there are no suggested movie :
+  if ($movies_id == []) {
+    getTop10();
+  }
   mysqli_close($conn);
 }
 
 
-function getTop10($conn)
+function getTop10()
 {
-  $Rq = "SELECT * FROM movies";
-  $res = mysqli_query($conn, $Rq);
+  $conn = connDb();
+  $res = $conn->query("SELECT * FROM movies");
 
-  while ($row = mysqli_fetch_array($res)) {
+  while ($row = $res->fetch_array()) {
     $movieId = $row["id"];
     $movieName = $row["name"];
     echo "<div class='page3__card'>";
@@ -318,29 +346,58 @@ function signup()
   if (isset($_POST["reg"])) {
     $conn = connDb();
     $email = $_POST["email"];
-    $Rq = "SELECT * FROM users WHERE email='$email' ;";
-    $res = mysqli_query($conn, $Rq);
+    if (empty($email)) {
+      error_msg("=> please fill all the fields");
+      $conn->close();
+      return;
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      error_msg("=> email is invalid.");
+      $conn->close();
+      return;
+    }
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? ;");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
 
-    if (mysqli_num_rows($res) == 0) {
+    if ($stmt->get_result()->num_rows == 0) {
+      $id = "";
       $username = $_POST["username"];
-      $password = $_POST["pwd"];
-      $Rq = "INSERT INTO users VALUES('', '$username', '$email', '$password') ;";
-      $res = mysqli_query($conn, $Rq);
+      $pwd = $_POST["pwd"];
+      $verified = true;
+      global $error_msg;
+      if (empty($username) || empty($pwd)) {
+        $error_msg = "=> please fill all the fields.<br>";
+        $verified = false;
+      }
+      if (strlen($username) < 6) {
+        $error_msg = $error_msg . "=> username must be at least 6 characters.<br>";
+        $verified = false;
+      }
+      if (strlen($pwd) < 6 || !preg_match('/[@,#,$,%]/', $pwd)) {
+        $error_msg = $error_msg . "=> password must be at least 6 characters and include one special character.";
+        $verified = false;
+      }
 
-      if (!$res) {
-        error_msg("something went wrong, please try again later");
-      } else {
-        header("Location: ../signin/");
+      if ($verified) {
+        // $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO users VALUES('$id', ?, ?, ?) ;");
+        $stmt->bind_param("sss", $username, $email, $pwd);
+        if (!$stmt->execute()) {
+          error_msg("something went wrong, please try again later");
+        } else {
+          header("Location: ../signin/");
+        }
       }
     } else {
       error_msg("this account already exist");
     }
+    $conn->close();
   }
 }
 
 
-// * adding the sha256 hashing with :
-// hash('sha256', 'TEXT'.$salt);
+// * adding hashed passwords using :
+// password_hash($password, PASSWORD_DEFAULT);
 function signin()
 {
   session_start();
@@ -350,13 +407,19 @@ function signin()
     $conn = connDb();
     $email = $_POST["email"];
     $password = $_POST["pwd"];
-    $Rq = "SELECT * FROM users WHERE email='$email' AND password='$password' ;";
-    $res = mysqli_query($conn, $Rq);
-
-    if (mysqli_num_rows($res) == 0) {
+    $hashed_pwd = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? AND password=? ;");
+    $stmt->bind_param("ss", $email, $password);
+    if (!$stmt->execute()) {
+      error_msg("Error in executing the query");
+      $conn->close();
+      return;
+    }
+    $res = $stmt->get_result();
+    if ($res->num_rows == 0) {
       error_msg("Those credential are wrong.");
     } else {
-      $row = mysqli_fetch_array($res);
+      $row = $res->fetch_array();
       $id = $row["id"];
       $username = $row["username"];
 
@@ -366,10 +429,9 @@ function signin()
       $_SESSION["username"] = $username;
       $_SESSION["email"] = $email;
 
-      error_msg("All good :).");
       header("Location: ../");
     }
-    mysqli_close($conn);
+    $conn->close();
   }
 }
 
@@ -379,17 +441,15 @@ function purchased_movies_nb()
     header("Location: ../signin/");
     die();
   }
-
   $conn = connDb();
-  $Rq = "SELECT movieId FROM purchases WHERE userId='$_SESSION[userId]' ;";
-  $res = mysqli_query($conn, $Rq);
-
-  if (!$res) {
-    echo "?";
+  $stmt = $conn->prepare("SELECT movieId FROM purchases WHERE userId=? ;");
+  $stmt->bind_param("s", $_SESSION["userId"]);
+  if (!$stmt->execute()) {
+    echo "movies";
   } else {
-    echo mysqli_num_rows($res);
+    echo $stmt->get_result()->num_rows;
   }
-  mysqli_close($conn);
+  $conn->close();
 }
 
 
@@ -398,14 +458,12 @@ function logout()
 {
   if (isset($_POST['log_out_btn'])) {
     global $logout_msg;
-    $logout_msg = "my name is wissem";
     if (!session_destroy()) {
       $logout_msg = "Error when logging out !";
     } else {
-      // $logout_msg = "ALL GOOD";
       // header("Location : ../index.php");
+      $logout_msg = "Successfully logged out";
       echo "<script>window.location.href='../index.php';</script>";
-      exit;
     }
   }
 }

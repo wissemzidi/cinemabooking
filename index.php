@@ -231,10 +231,7 @@ require "./func.php";
         </div>
         <div class="error">
           <?php
-          if (isset($_POST["mailSubsBtn"])) {
-            $res = subsMail();
-            echo "<span class='res'>$res</span>";
-          }
+          if (isset($_POST["mailSubsBtn"])) subsMail();
           ?>
         </div>
       </form>
