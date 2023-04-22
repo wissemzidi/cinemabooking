@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+  html {
+    background-color: #000;
+    color: #EEE;
+  }
+</style>
+
+<head>
+  <meta name="keywords" content="cinema, booking, cinemabooking, series, netflix, netflixy, movies">
+  <meta name="author" content="Wissem">
+  <meta name="publisher" content="wissem">
+  <meta name="copyright" content="wissemzidi 2023">
+  <meta name="description"
+    content="the best website to book your movies/cinema tickets. online ticket buying for all the major theatres and cinemas across Tunisia.">
+  <meta name="page-topic" content="online movies/theatre/cinema tickets booking/buying">
+  <meta name="page-type" content="home">
+  <meta name="audience" content="everyone">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="./icons/logo.svg">
+  <script src="./home/main.js" defer></script>
+  <link rel="stylesheet" href="./home/style.css">
+  <title>Cinema Booking</title>
+</head>
+
+<body>
+
+  <aside id="aside" hidden aria-disabled="true">
+    <div class="aside__header">
+      <h2 class="aside__title">Menu</h2>
+    </div>
+    <div class="aside__main">
+      <nav class="aside__nav" aria-label="side bar">
+        <ul class="aside__ul">
+          <div>
+            <li><a href="./index.php">Home</a></li>
+            <li><a href="./signin/index.php">Account</a></li>
+          </div>
+          <div>
+            <li><a href="#page3">Movies</a></li>
+            <li><a href="#footer">Info</a></li>
+          </div>
+        </ul>
+      </nav>
+      <div class="aside-search">
+        <input id="aside-search-box" type="search">
+      </div>
+    </div>
+  </aside>
+
+  <header>
+    <div>
+      <a href="#">
+        <img width="35" src="./icons/logo.svg" title="cinema booking" alt="">
+      </a>
+      <h1 id="page-main-title">Cinema Booking</h1>
+    </div>
+    <nav id="header-nav">
+      <button id="search-button">
+        <img id="search-btn" width="25" src="./icons/search.png" alt="Search">
+      </button>
+      <input id="search-box" type="search" hidden disabled>
+      <button>
+        <img width="25" src="./icons/top.png" alt="">
+      </button>
+      <a href="./signin/index.php">
+        <img width="25" src="./icons/account.png" alt="Account">
+      </a>
+      <button id="aside-btn-container">
+        <img id="aside-btn" width="25" src="./icons/menu.png" alt="Menu">
+      </button>
+    </nav>
+  </header>
+
+  <style>
+    #hero {
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    #hero h1 {
+      color: red;
+      text-align: center;
+      font-size: 5rem;
+    }
+
+    #hero p {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    #hero a {
+      display: flex;
+      gap: 1rem;
+      margin-inline: auto;
+      padding: .5rem 1rem;
+      border-radius: 99px;
+      color: white;
+      background-color: red;
+      border: none;
+      outline-color: transparent;
+      text-decoration: none;
+    }
+  </style>
+
+  <main>
+    <section id="hero">
+      <h1>404 ERROR</h1>
+      <p>The page you are looking for does not exist .</p>
+      <a href="./index.php" title="Home">
+        <img src="./icons/home.svg" alt="">
+        Return to home page
+      </a>
+    </section>
+
+</body>
+
+</html>

@@ -176,7 +176,6 @@ require "./func.php";
           </div>
         </div>
       </div>
-      </div>
     </section>
 
 

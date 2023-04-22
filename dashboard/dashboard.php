@@ -3,7 +3,8 @@ $error_msg = "";
 require "../func.php";
 session_start();
 if (!isset($_SESSION["userId"])) header("Location: ../index.php");
-isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
+// isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "settings";
+isset($_GET["p"]) ? $selected_page = $_GET["p"] : $selected_page = "purchases";
 $logout_msg = "";
 logout();
 ?>
@@ -70,94 +71,95 @@ logout();
     </nav>
 
     <?php
-    if ($selected_page == "settings") {
-      echo ("
-    <section class='page pr-20 pl-20' id='settings-page' style='width: 100%'>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Privacy</h2>
-        <div class='pb-10 pt-10'>
-          number of devices with this account :
-          <span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
-        </div>
-        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Show Email </span>
-          <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-      </form>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Appearance</h2>
-        <div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Website animations </span>
-          <input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Hide main page on enter </span>
-          <input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <label for='font-size' class='fs-14'>change font size : </label>
-          <select name='font-size' id='font-size' class='select-input'>
-            <option selected value='mid'>Medium (Recommended)</option>
-            <option value='min'>Minimum</option>
-            <option value='max'>Maximum</option>
-          </select>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-      </form>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Payment</h2>
-        <div class='pb-10 pt-10'>
-          you are paying using :
-          <span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
-        </div>
-        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'>show payment method</span>
-          <input class='toggle-input' type='checkbox' name='dark-theme' hidden />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <label for='font-size' class='fs-14'>Warn me before paying</label>
-          <select name='font-size' id='font-size' class='select-input'>
-            <option selected value='payPal'>PayPal</option>
-            <option value='masterCard'>Master Card</option>
-            <option value='visa'>Visa</option>
-            <option value='aliPay'>Ali pay</option>
-          </select>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-        <center class='pt-10 border-t'>
-          <span class='op-min'>
-            All your banking and payment info are not secure :)
-          </span>
-        </center>
-      </form>
-    </section>
-      ");
-    } else if ($selected_page == "purchases") {
+    // if ($selected_page == "settings") {
+    //   echo ("
+    // <section class='page pr-20 pl-20' id='settings-page' style='width: 100%'>
+    //   <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+    //     <h2 class='txt-c fw-light pb-10'>Privacy</h2>
+    //     <div class='pb-10 pt-10'>
+    //       number of devices with this account :
+    //       <span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
+    //     </div>
+    //     <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+    //       <span style='letter-spacing: -0.5px'> Show Email </span>
+    //       <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
+    //       <div class='toggle-switch'>
+    //         <div class='toggle-switch_inner'></div>
+    //       </div>
+    //     </div>
+    //     <div class='submit-btn-container' class='pt-30 d-flex'>
+    //       <button class='submit-btn' type='submit'>
+    //         Save
+    //       </button>
+    //     </div>
+    //   </form>
+    //   <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+    //     <h2 class='txt-c fw-light pb-10'>Appearance</h2>
+    //     <div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
+    //       <span style='letter-spacing: -0.5px'> Website animations </span>
+    //       <input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
+    //       <div class='toggle-switch'>
+    //         <div class='toggle-switch_inner'></div>
+    //       </div>
+    //     </div>
+    //     <div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
+    //       <span style='letter-spacing: -0.5px'> Hide main page on enter </span>
+    //       <input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
+    //       <div class='toggle-switch'>
+    //         <div class='toggle-switch_inner'></div>
+    //       </div>
+    //     </div>
+    //     <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+    //       <label for='font-size' class='fs-14'>change font size : </label>
+    //       <select name='font-size' id='font-size' class='select-input'>
+    //         <option selected value='mid'>Medium (Recommended)</option>
+    //         <option value='min'>Minimum</option>
+    //         <option value='max'>Maximum</option>
+    //       </select>
+    //     </div>
+    //     <div class='submit-btn-container' class='pt-30 d-flex'>
+    //       <button class='submit-btn' type='submit'>
+    //         Save
+    //       </button>
+    //     </div>
+    //   </form>
+    //   <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+    //     <h2 class='txt-c fw-light pb-10'>Payment</h2>
+    //     <div class='pb-10 pt-10'>
+    //       you are paying using :
+    //       <span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
+    //     </div>
+    //     <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+    //       <span style='letter-spacing: -0.5px'>show payment method</span>
+    //       <input class='toggle-input' type='checkbox' name='dark-theme' hidden />
+    //       <div class='toggle-switch'>
+    //         <div class='toggle-switch_inner'></div>
+    //       </div>
+    //     </div>
+    //     <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+    //       <label for='font-size' class='fs-14'>Warn me before paying</label>
+    //       <select name='font-size' id='font-size' class='select-input'>
+    //         <option selected value='payPal'>PayPal</option>
+    //         <option value='masterCard'>Master Card</option>
+    //         <option value='visa'>Visa</option>
+    //         <option value='aliPay'>Ali pay</option>
+    //       </select>
+    //     </div>
+    //     <div class='submit-btn-container' class='pt-30 d-flex'>
+    //       <button class='submit-btn' type='submit'>
+    //         Save
+    //       </button>
+    //     </div>
+    //     <center class='pt-10 border-t'>
+    //       <span class='op-min'>
+    //         All your banking and payment info are not secure :)
+    //       </span>
+    //     </center>
+    //   </form>
+    // </section>
+    //   ")
+    // } else 
+    if ($selected_page == "purchases") {
       delete_movie();
       echo ("
     <section class='page' id='purchases-page' style='width: 100%'>

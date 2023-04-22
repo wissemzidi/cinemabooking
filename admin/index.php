@@ -1,12 +1,19 @@
 <?php
 require "../func.php";
-if (isset($_COOKIE["admin_token"])) {
+$error_msg = "";
+session_start();
+if (isset($_SESSION["admin_token"])) {
   $conn = connDb();
-  $token = $_COOKIE["admin_token"];
-  $Rq = "SELECT * FROM admins WHERE id='$token' ;";
-  $res = mysqli_query($conn, $Rq);
-  if (mysqli_num_rows($res) > 0) {
-    header("Location: ./admin_dashboard.php");
+  $token = $_SESSION["admin_token"];
+  $stmt = $conn->prepare("SELECT * FROM admins WHERE id=? ;");
+  $stmt->bind_param("s", $token);
+  if (!$stmt->execute()) {
+    $error_msg = "Error when verifying your session";
+  } else {
+    if ($stmt->get_result()->num_rows > 0) {
+      mysqli_close($conn);
+      header("Location: ./admin_dashboard.php");
+    }
   }
   mysqli_close($conn);
 }
@@ -34,7 +41,7 @@ if (isset($_COOKIE["admin_token"])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="../project assets/logo/logo(light).svg">
+  <link rel="icon" type="image/x-icon" href="../icons/admin.svg">
   <script src="../home/main.js" defer></script>
   <link rel="stylesheet" href="../home/style.css">
   <link rel="stylesheet" href="./admin.css">
@@ -51,62 +58,65 @@ if (isset($_COOKIE["admin_token"])) {
       <h1 id="page-main-title">Admin Login</h1>
     </div>
     <nav id="header-nav">
-      <button id="search-button">
-        <img id="search-btn" width="25" src="../icons/search.png" alt="Search">
-      </button>
-      <input id="search-box" type="search" hidden disabled>
-      <button>
-        <img width="25" src="../icons/top.png" alt="">
-      </button>
-      <a href="../signin/index.php">
-        <img width="25" src="../icons/account.png" alt="Account">
+      <a href="../">
+        <img id="search-btn" width="25" src="../icons/back.svg" alt="Search">
       </a>
-      <button id="aside-btn-container">
-        <img id="aside-btn" width="25" src="../icons/menu.png" alt="Menu">
-      </button>
     </nav>
   </header>
 
   <main>
     <section id="hero">
+      <?php admin_login() ?>
       <form method="POST" id="admin-signin-form" name="admin_signin_form">
         <div>
           <input type="text" class="login_input" name="email" id="email" placeholder="Email">
         </div>
         <div>
-          <input type="text" class="login_input" name="password" id="password" placeholder="Password">
+          <input type="password" class="login_input" name="password" id="password" placeholder="Password">
         </div>
         <div>
           <button type="submit" class="login_button">Login</button>
           <button type="reset" class="login_button">Cancel</button>
         </div>
       </form>
+      <p class="error important_error">
+        <?php if ($error_msg != "") echo $error_msg ?>
+      </p>
     </section>
   </main>
+</body>
 
-  <?php
+<?php
+function admin_login()
+{
   if (isset($_POST['email'])) {
     $conn = connDb();
+    global $error_msg;
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $Rq = "SELECT id FROM admins WHERE email = '$email' AND password = '$password'";
-    $res = mysqli_query($conn, $Rq);
-
-    if (!$res) {
-      echo "<p>An Error happened during the process, please try again later or contact us for more information</p>";
-    } elseif (mysqli_num_rows($res) == 0) {
+    $stmt = $conn->prepare("SELECT * FROM admins WHERE email=? AND password=?");
+    $stmt->bind_param("ss", $email, $password);
+    if (!$stmt->execute()) {
+      $error_msg = "Error when logging in. try again later.";
+      mysqli_close($conn);
+      return;
+    }
+    $res = $stmt->get_result();
+    if ($res->num_rows == 0) {
       echo "<p>Wrong email or password</p>";
     } else {
-      $row = mysqli_fetch_array($res);
+      $row = $res->fetch_array();
       $id = $row["id"];
-      $token = $id;
-      setcookie("admin_token", $token, time() + (86400 * 30), "/");
+      $access = $row["access"];
+      session_set_cookie_params(86400 * 30);
+      session_start();
+      $_SESSION["admin_token"] = $id;
+      $_SESSION["access"] = $access;
       echo "<p class='login_success'>You are logged in</p>";
       header("Location: ./admin_dashboard.php");
     }
   }
-  ?>
-
-</body>
+}
+?>
 
 </html>

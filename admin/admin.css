@@ -2,8 +2,47 @@
   box-sizing: border-box;
 }
 
+body {
+  scroll-behavior: auto;
+}
+
+#logout_form {
+  padding-block: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout_btn {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: white;
+  border: none;
+  background-color: rgba(143, 82, 160, 0.9);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  transition: 0.2s ease-out background-color, 0.2s ease-out padding-inline;
+}
+
+.logout_btn:is(:hover, :focus-visible) {
+  background-color: red;
+  padding-inline: 1.8rem;
+}
+
 #hero {
   display: grid;
+}
+
+.form {
+  margin-inline: auto;
+  padding-inline: 0.5rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
 }
 
 #admin-signin-form {
@@ -26,9 +65,13 @@
   width: 100%;
   gap: 1rem;
 }
-/* 
-#add_movie_form > div:not(:last-child) {
-} */
+
+label {
+  padding: 0.5rem;
+  font-size: 1.05rem;
+  color: #efefef;
+  opacity: 0.9;
+}
 
 .login_input {
   margin-inline: auto;
@@ -94,4 +137,32 @@
   cursor: pointer;
   filter: invert(1);
   opacity: 0.75;
+}
+
+.success {
+  padding-block: 0.5rem;
+  font-size: 1.1rem;
+  color: green;
+  text-align: center;
+}
+
+.important_success {
+  padding-block: 0.5rem;
+  font-size: 1.5rem;
+  color: green;
+  text-align: center;
+}
+
+.error {
+  padding-block: 0.5rem;
+  font-size: 1.1rem;
+  color: red;
+  text-align: center;
+}
+
+.important_error {
+  padding-block: 0.5rem;
+  font-size: 1.5rem;
+  color: red;
+  text-align: center;
 }
