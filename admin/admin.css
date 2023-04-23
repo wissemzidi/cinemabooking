@@ -36,6 +36,7 @@ body {
 }
 
 .form {
+  scroll-padding-top: 2rem;
   margin-inline: auto;
   padding-inline: 0.5rem;
   margin-top: 1rem;
@@ -46,24 +47,16 @@ body {
 }
 
 #admin-signin-form {
-  padding-inline: 0.5rem;
   margin-top: 5rem;
-  display: grid;
   align-items: center;
-  justify-content: center;
-  justify-items: center;
-  width: 100%;
-  gap: 2rem;
+  gap: 3rem;
 }
 
-#add_movie_form {
-  margin-inline: auto;
-  padding-inline: 0.5rem;
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
+#admin-signin-form > div {
   width: 100%;
-  gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 label {

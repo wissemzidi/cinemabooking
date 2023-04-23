@@ -1,6 +1,6 @@
 <?php
 require "../func.php";
-$error_msg = "";
+// redirect to the admin dashboard if the admin is logged in
 if (isset($_SESSION["admin_token"])) {
   $conn = connDb();
   $token = $_SESSION["admin_token"];
@@ -16,6 +16,7 @@ if (isset($_SESSION["admin_token"])) {
   }
   mysqli_close($conn);
 }
+// handling the error massages
 if (isset($_GET["e"])) {
   switch ($_GET["e"]) {
     case '1':
@@ -26,8 +27,8 @@ if (isset($_GET["e"])) {
       break;
   }
 }
+$error_msg = "";
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,7 +52,7 @@ if (isset($_GET["e"])) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="../icons/admin.svg">
-  <script src="../home/main.js" defer></script>
+  <!-- <script src="../home/main.js" defer></script> -->
   <link rel="stylesheet" href="../home/style.css">
   <link rel="stylesheet" href="./admin.css">
   <title>Admin Login</title>
@@ -76,7 +77,7 @@ if (isset($_GET["e"])) {
   <main>
     <section id="hero">
       <?php admin_login() ?>
-      <form method="POST" id="admin-signin-form" name="admin_signin_form">
+      <form method="POST" class="form" id="admin-signin-form" name="admin_signin_form">
         <div>
           <input type="text" class="login_input" name="email" id="email" placeholder="Email">
         </div>

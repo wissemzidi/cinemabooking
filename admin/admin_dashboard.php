@@ -1,7 +1,5 @@
 <?php
 require "../func.php";
-$edit_error = "";
-$update_user_error = "";
 // redirect to admin signin page if is not signed-in
 if (!isset($_SESSION["admin_token"])) {
   $conn = connDb();
@@ -21,6 +19,8 @@ if (isset($_POST["logout_btn"])) {
   session_destroy();
   exit(header("Location: ./index.php"));
 }
+$edit_error = "";
+$update_user_error = "";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +80,7 @@ if (isset($_POST["logout_btn"])) {
           </div>
         </div>
         <div class="hero_card_main" hidden>
-          <form method="POST" id="add_movie_form" name="add_movie_form">
+          <form method="POST" class="form" id="add_movie_form" name="add_movie_form">
             <div>
               <input type="text" class="login_input" name="name" id="name" placeholder="Name">
             </div>
@@ -120,7 +120,7 @@ if (isset($_POST["logout_btn"])) {
           </div>
         </div>
         <div class="hero_card_main" hidden>
-          <form method="POST" id="add_movie_form" name="add_movie_form">
+          <form method="POST" class="form" id="add_movie_form" name="add_movie_form">
             <div>
               <input type="text" class="login_input" name="name" id="name" placeholder="Movie Name">
             </div>
@@ -277,7 +277,7 @@ if (isset($_POST["logout_btn"])) {
     </section>
 
 
-    <form name="logout_form" id="logout_form" method="post">
+    <form class="form" name="logout_form" id="logout_form" method="post">
       <button type="submit" name="logout_btn" class="logout_btn">
         <img id="search-btn" width="25" src="../icons/logout.svg" alt="Search">
         <h3>Logout</h3>

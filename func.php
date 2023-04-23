@@ -13,7 +13,7 @@ function connDb()
   }
 }
 
-// refresh_user();
+refresh_user();
 refresh_admin();
 
 function refresh_admin()
@@ -36,28 +36,27 @@ function refresh_admin()
   }
 }
 
-// function refresh_user()
-// {
-
-//   if (!isset($_SESSION["userId"])) {
-//     return;
-//   }
-//   $conn = connDb();
-//   $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
-//   $stmt->bind_param("i", $_SESSION["userId"]);
-//   if (!$stmt->execute()) {
-//     echo ("<script>alert('Server Error, please try again later.');</script>");
-//   } else {
-//     $res = $stmt->get_result();
-//     // if ($res->num_rows == 0) {
-//     //   session_destroy();
-//     //   exit(header("Location: /login/ "));
-//     // }
-//     $row = $res->fetch_array();
-//     $_SESSION["username"] = $row["username"];
-//     $_SESSION["email"] = $row["email"];
-//   }
-// }
+function refresh_user()
+{
+  if (!isset($_SESSION["userId"])) {
+    return;
+  }
+  $conn = connDb();
+  $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+  $stmt->bind_param("i", $_SESSION["userId"]);
+  if (!$stmt->execute()) {
+    echo ("<script>alert('Server Error, please try again later.');</script>");
+  } else {
+    $res = $stmt->get_result();
+    if ($res->num_rows == 0) {
+      session_destroy();
+      exit(header("Location: /login/ "));
+    }
+    $row = $res->fetch_array();
+    $_SESSION["username"] = $row["username"];
+    $_SESSION["email"] = $row["email"];
+  }
+}
 
 function subsMail()
 {
