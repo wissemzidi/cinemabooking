@@ -2,6 +2,7 @@
 require "../func.php";
 $edit_error = "";
 $update_user_error = "";
+// redirect to admin signin page if is not signed-in
 if (!isset($_SESSION["admin_token"])) {
   $conn = connDb();
   $stmt = $conn->prepare("SELECT * FROM admins WHERE id=? ;");
@@ -375,6 +376,7 @@ function update_movie()
     $old_showDate = $_POST["showDate"];
     $stmt = $conn->prepare("SELECT * FROM movies WHERE name=? AND showDate=? ;");
     $stmt->bind_param("ss", $old_name, $old_showDate);
+    focus_open_card("update_movie_form_container");
     if (!$stmt->execute()) {
       $edit_error = "Error while executing your request !";
     }
@@ -427,7 +429,6 @@ function update_movie()
         </div>
       </form>
       ");
-      focus_open_card("update_movie_form_container");
     }
   }
 
