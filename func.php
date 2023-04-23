@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 function connDb()
 {
   require "conn.php";
@@ -11,6 +13,51 @@ function connDb()
   }
 }
 
+// refresh_user();
+refresh_admin();
+
+function refresh_admin()
+{
+  if (!isset($_SESSION["admin_token"])) {
+    return;
+  }
+  $conn = connDb();
+  $stmt = $conn->prepare("SELECT * FROM admins WHERE id=?");
+  $stmt->bind_param("i", $_SESSION["admin_token"]);
+  if (!$stmt->execute()) {
+    echo ("<script>alert('Server Error, please try again later.');</script>");
+  } else {
+    $res = $stmt->get_result();
+    if ($res->num_rows == 0) {
+      session_destroy();
+    }
+    $row = $res->fetch_array();
+    $_SESSION["admin_token"] = $row["id"];
+  }
+}
+
+// function refresh_user()
+// {
+
+//   if (!isset($_SESSION["userId"])) {
+//     return;
+//   }
+//   $conn = connDb();
+//   $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+//   $stmt->bind_param("i", $_SESSION["userId"]);
+//   if (!$stmt->execute()) {
+//     echo ("<script>alert('Server Error, please try again later.');</script>");
+//   } else {
+//     $res = $stmt->get_result();
+//     // if ($res->num_rows == 0) {
+//     //   session_destroy();
+//     //   exit(header("Location: /login/ "));
+//     // }
+//     $row = $res->fetch_array();
+//     $_SESSION["username"] = $row["username"];
+//     $_SESSION["email"] = $row["email"];
+//   }
+// }
 
 function subsMail()
 {
@@ -179,7 +226,7 @@ function getMovieInfo()
 
 function book_seat()
 {
-  session_start();
+
   if (isset($_POST["seat"]) && !isset($_SESSION["userId"])) {
     header("Location: ../signin/index.php");
   } elseif (isset($_POST["seat"])) {
@@ -339,8 +386,6 @@ function getTop10()
 }
 
 
-// * adding the sha256 hashing with :
-// hash('sha256', 'TEXT'.$salt);
 function signup()
 {
   if (isset($_POST["reg"])) {
@@ -379,9 +424,8 @@ function signup()
       }
 
       if ($verified) {
-        // $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("INSERT INTO users VALUES('$id', ?, ?, ?) ;");
-        $stmt->bind_param("sss", $username, $email, $pwd);
+        $stmt->bind_param("sss", $username, $email, password_hash($pwd, PASSWORD_DEFAULT));
         if (!$stmt->execute()) {
           error_msg("something went wrong, please try again later");
         } else {
@@ -396,35 +440,35 @@ function signup()
 }
 
 
-// * adding hashed passwords using :
-// password_hash($password, PASSWORD_DEFAULT);
 function signin()
 {
-  session_start();
+
   if (isset($_SESSION["userId"])) {
     header("Location: ../dashboard/dashboard.php");
   } elseif (isset($_POST["reg"])) {
     $conn = connDb();
     $email = $_POST["email"];
     $password = $_POST["pwd"];
-    $hashed_pwd = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? AND password=? ;");
-    $stmt->bind_param("ss", $email, $password);
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=? ;");
+    $stmt->bind_param("s", $email);
     if (!$stmt->execute()) {
-      error_msg("Error in executing the query");
+      error_msg("Error while executing the query");
       $conn->close();
       return;
     }
     $res = $stmt->get_result();
     if ($res->num_rows == 0) {
-      error_msg("Those credential are wrong.");
+      error_msg("No account with this email.");
     } else {
       $row = $res->fetch_array();
+      if (!password_verify($password, $res->fetch_array()["pwd"])) {
+        echo "Wrong password";
+      }
       $id = $row["id"];
       $username = $row["username"];
 
       session_set_cookie_params(86400 * 30);
-      session_start();
+
       $_SESSION["userId"] = $id;
       $_SESSION["username"] = $username;
       $_SESSION["email"] = $email;

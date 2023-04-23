@@ -2,19 +2,23 @@
 require "../func.php";
 $edit_error = "";
 $update_user_error = "";
-session_start();
 if (!isset($_SESSION["admin_token"])) {
   $conn = connDb();
   $stmt = $conn->prepare("SELECT * FROM admins WHERE id=? ;");
   $stmt->bind_param("s", $_SESSION["admin_token"]);
   if (!$stmt->execute()) {
-    header("Location: ./index.php?errorMsg=An Error occurred when checking the session");
+    header("Location: ./index.php?e=1");
     mysqli_close($conn);
   } elseif ($stmt->get_result()->num_rows == 0) {
-    header("Location: ./index.php");
+    header("Location: ./index.php?e=2");
     mysqli_close($conn);
   }
   mysqli_close($conn);
+}
+// logout
+if (isset($_POST["logout_btn"])) {
+  session_destroy();
+  exit(header("Location: ./index.php"));
 }
 ?>
 <!DOCTYPE html>
@@ -144,7 +148,7 @@ if (!isset($_SESSION["admin_token"])) {
         </div>
         <div class="hero_card_main" id="update_movie_form_container" hidden>
           <?php update_movie(); ?>
-          <p class='important_error error'>
+          <p class='error error'>
             <?php echo $edit_error ?>
           </p>
         </div>
@@ -190,7 +194,7 @@ if (!isset($_SESSION["admin_token"])) {
         </div>
         <div class="hero_card_main" id="update_user_form_container" hidden>
           <?php update_user(); ?>
-          <p class='important_error error'>
+          <p class='error error'>
             <?php echo $update_user_error ?>
           </p>
         </div>
@@ -289,20 +293,20 @@ function add_admin()
   if (isset($_POST["add_admin_btn"])) {
     $conn = connDb();
     $access = $_POST["access"];
-    if ($_SESSION["access"] == 2 && $access > 1) {
-      $access = 1;
-    } elseif ($_SESSION["access"] == 3 && $access > 2) {
-      $access = 2;
+    focus_open_card("add_admin_form_container");
+    if ($access >= $_SESSION["access"] || $access < 1) {
+      echo "<p class='error'>You can't create an admin with this access level</p>";
     } else {
-      $access = 1;
+      $stmt = $conn->prepare("INSERT INTO admins VALUES ('', ?, ?, ?, ?) ;");
+      $hashed_pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+      $stmt->bind_param("ssss", $_POST["name"], $_POST["email"], $hashed_pwd, $access);
+      if (!$stmt->execute() || $stmt->affected_rows == 0) {
+        echo "<p class='error'>Error while executing the query</p>";
+      } else {
+        echo "<p class='success'>Admin added successfully</p>";
+      }
     }
-    $stmt = $conn->prepare("INSERT INTO admins VALUES ('', ?, ?, ?, ?) ;");
-    $stmt->bind_param("ssss", $_POST["name"], $_POST["email"], $_POST["pwd"], $access);
-    if (!$stmt->execute() || $stmt->affected_rows == 0) {
-      echo "<p class='important_error'>Error while executing the query</p>";
-    } else {
-      echo "<p class='important_success'>Admin added successfully</p>";
-    }
+    $conn->close();
   }
 }
 
@@ -313,21 +317,22 @@ function delete_admin()
     $email = $_POST["email"];
     $stmt = $conn->prepare("SELECT * FROM admins WHERE email=? ;");
     $stmt->bind_param("s", $_POST["email"]);
+    focus_open_card("delete_admin_form_container");
     if (!$stmt->execute()) {
-      echo "<p class='important_error'>Error while executing the query</p>";
+      echo "<p class='error'>Error while executing the query</p>";
     } else {
       $res = $stmt->get_result();
       if ($res->num_rows == 0) {
-        echo "<p class='important_success'>No admin with this email was found</p>";
+        echo "<p class='error'>No admin with this email was found</p>";
       } elseif ($res->fetch_array()["access"] >= $_SESSION["access"]) {
-        echo "<p class='important_error'>You are not allowed to delete this admin</p>";
+        echo "<p class='error'>You are not allowed to delete this admin</p>";
       } else {
         $stmt = $conn->prepare("DELETE FROM admins WHERE email=? ");
         $stmt->bind_param("s", $email);
         if (!$stmt->execute() || $stmt->affected_rows == 0) {
-          echo "<p class='important_error'>Error while executing the query</p>";
+          echo "<p class='error'>Error while executing the query</p>";
         } else {
-          echo "<p class='important_success'>Admin added successfully</p>";
+          echo "<p class='success'>Admin deleted successfully</p>";
         }
       }
     }
@@ -451,7 +456,7 @@ function update_movie()
     if (!$stmt->execute()) {
       $edit_error = "error when executing the request";
     } elseif ($stmt->affected_rows > 0) {
-      echo "<p class='important_success success'>Movie updated successfully</p>";
+      echo "<p class='success success'>Movie updated successfully</p>";
     } else {
       $edit_error = "No movie was updated !";
     }
@@ -545,7 +550,7 @@ function update_user()
     if (!$stmt->execute()) {
       $update_user_error = "Error when executing the request";
     } elseif ($stmt->affected_rows > 0) {
-      echo "<p class='important_success'>User Credentials updated successfully</p>";
+      echo "<p class='success'>User Credentials updated successfully</p>";
     } else {
       $update_user_error = "No user was updated !";
     }
@@ -603,11 +608,11 @@ function delete_user()
     $stmt = $conn->prepare("DELETE FROM users WHERE email=? ;");
     $stmt->bind_param("s", $email);
     if (!$stmt->execute()) {
-      echo ("<p class='important_error'>ERROR in the execution of the request</p>");
+      echo ("<p class='error'>ERROR in the execution of the request</p>");
     } elseif ($stmt->affected_rows == 0) {
-      echo ("<p class='important_error'>User not found</p>");
+      echo ("<p class='error'>User not found</p>");
     } else {
-      echo ("<p class='important_success success'>User deleted successfully</p>");
+      echo ("<p class='success success'>User deleted successfully</p>");
     }
     focus_open_card("delete_user_form_container");
     $conn->close();
@@ -627,17 +632,6 @@ function focus_open_card($card_id)
   </script>");
 }
 
-// logout
-if (isset($_POST["logout_btn"])) {
-  unset($_SESSION["admin_token"]);
-  unset($_SESSION["access"]);
-  session_destroy();
-  echo ("
-  <script>
-  window.location.href = './index.php'
-  </script>
-  ");
-}
 ?>
 
 </html>

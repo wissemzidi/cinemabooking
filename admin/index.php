@@ -1,7 +1,6 @@
 <?php
 require "../func.php";
 $error_msg = "";
-session_start();
 if (isset($_SESSION["admin_token"])) {
   $conn = connDb();
   $token = $_SESSION["admin_token"];
@@ -16,6 +15,16 @@ if (isset($_SESSION["admin_token"])) {
     }
   }
   mysqli_close($conn);
+}
+if (isset($_GET["e"])) {
+  switch ($_GET["e"]) {
+    case '1':
+      echo ("Server error when checking your session");
+      break;
+    case '2':
+      echo ("Admin with this session not found");
+      break;
+  }
 }
 ?>
 
@@ -94,8 +103,8 @@ function admin_login()
     global $error_msg;
     $email = $_POST["email"];
     $password = $_POST["password"];
-    $stmt = $conn->prepare("SELECT * FROM admins WHERE email=? AND password=?");
-    $stmt->bind_param("ss", $email, $password);
+    $stmt = $conn->prepare("SELECT * FROM admins WHERE email=?");
+    $stmt->bind_param("s", $email);
     if (!$stmt->execute()) {
       $error_msg = "Error when logging in. try again later.";
       mysqli_close($conn);
@@ -103,17 +112,22 @@ function admin_login()
     }
     $res = $stmt->get_result();
     if ($res->num_rows == 0) {
-      echo "<p>Wrong email or password</p>";
+      echo "<p>No user found with this email</p>";
     } else {
       $row = $res->fetch_array();
-      $id = $row["id"];
-      $access = $row["access"];
-      session_set_cookie_params(86400 * 30);
-      session_start();
-      $_SESSION["admin_token"] = $id;
-      $_SESSION["access"] = $access;
-      echo "<p class='login_success'>You are logged in</p>";
-      header("Location: ./admin_dashboard.php");
+      $hashed_pwd = $row["password"];
+      if (!password_verify($password, $hashed_pwd)) {
+        echo "<p>Wrong password</p>";
+      } else {
+        $id = $row["id"];
+        $access = $row["access"];
+        session_set_cookie_params(86400 * 30);
+
+        $_SESSION["admin_token"] = $id;
+        $_SESSION["access"] = $access;
+        echo "<p class='login_success'>You are logged in</p>";
+        header("Location: ./admin_dashboard.php");
+      }
     }
   }
 }
