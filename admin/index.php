@@ -19,10 +19,10 @@ if (isset($_SESSION["admin_token"])) {
 if (isset($_GET["e"])) {
   switch ($_GET["e"]) {
     case '1':
-      echo ("Server error when checking your session");
+      $error_msg = "Server error when checking your session";
       break;
     case '2':
-      echo ("Admin with this session not found");
+      $error_msg = "Admin with this session not found";
       break;
   }
 }
