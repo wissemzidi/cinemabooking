@@ -41,8 +41,28 @@ $logout_msg = "";
 
 <body>
 
-
   <header>
+    <form action="" method="post" id="header_user_info" enctype="multipart/form-data">
+      <?php change_user_img(); ?>
+      <!-- set the header img -->
+      <?php if (
+        isset($_SESSION["user_img"]) &&
+        file_exists("./profiles_pic/$_SESSION[user_img]")
+      ) {
+        $header_img = "src='./profiles_pic/$_SESSION[user_img]'";
+      } else {
+        $header_img = "src='../icons/user(outline).svg'";
+      } ?>
+      <div id="header_user_img_container" onclick="clickOn('#user_img_input')">
+        <img width="50" alt="" <?php echo $header_img ?> id="user_img" />
+        <img width="40" src="../icons/edit.svg" alt="Edit" class="header_edit_img">
+      </div>
+      <h2 class="header_user_name" id="header_user_name">
+        <?php echo $_SESSION["username"] ?>
+      </h2>
+      <input type="file" name="user_img" id="user_img_input" onchange="clickOn('#user_img_submit')" hidden aria-hidden="true" />
+      <button type="submit" name="user_img_submit" id="user_img_submit" hidden aria-hidden="true">Change image</button>
+    </form>
     <h1 id="page-title" class="fw-light fs-30 pb-30 pt-20">
       <?php echo $selected_page ?>
     </h1>
@@ -89,171 +109,227 @@ $logout_msg = "";
     <?php
     if ($selected_page == "settings") {
       echo ("
-    <section class='page pr-20 pl-20' id='settings-page' style='width: 100%'>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Privacy</h2>
-        <div class='pb-10 pt-10'>
-          number of devices with this account :
-          <span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
-        </div>
-        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Show Email </span>
-          <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> News Mail Subscription </span>
-          <input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-      </form>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Preferences</h2>
-        <div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Website animations </span>
-          <input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'> Hide main page on enter </span>
-          <input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <label for='font-size' class='fs-14'>change font size : </label>
-          <select name='font-size' id='font-size' class='select-input'>
-            <option selected value='mid'>Medium (Recommended)</option>
-            <option value='min'>Minimum</option>
-            <option value='max'>Maximum</option>
-          </select>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-      </form>
-      <form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
-        <h2 class='txt-c fw-light pb-10'>Payment</h2>
-        <div class='pb-10 pt-10'>
-          you are paying using :
-          <span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
-        </div>
-        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <span style='letter-spacing: -0.5px'>show payment method</span>
-          <input class='toggle-input' type='checkbox' name='dark-theme' hidden />
-          <div class='toggle-switch'>
-            <div class='toggle-switch_inner'></div>
-          </div>
-        </div>
-        <div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
-          <label for='font-size' class='fs-14'>Warn me before paying</label>
-          <select name='font-size' id='font-size' class='select-input'>
-            <option selected value='payPal'>PayPal</option>
-            <option value='masterCard'>Master Card</option>
-            <option value='visa'>Visa</option>
-            <option value='aliPay'>Ali pay</option>
-          </select>
-        </div>
-        <div class='submit-btn-container' class='pt-30 d-flex'>
-          <button class='submit-btn' type='submit'>
-            Save
-          </button>
-        </div>
-        <center class='pt-10 border-t'>
-          <span class='op-min'>
-            All your banking and payment info are not secure :)
-          </span>
-        </center>
-      </form>
-    </section>
-      ");
+		<section class='page pr-20 pl-20' id='settings-page' style='width: 100%'>
+			<form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+				<h2 class='txt-c fw-light pb-10'>Privacy</h2>
+				<div class='pb-10 pt-10'>
+					number of devices with this account :
+					<span class='c-white bg-gray fw-light rad-50 pr-10 pl-10'>5</span>
+				</div>
+				<div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+					<span style='letter-spacing: -0.5px'> Show Email </span>
+					<input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
+					<div class='toggle-switch'>
+						<div class='toggle-switch_inner'></div>
+					</div>
+				</div>
+				<div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+					<span style='letter-spacing: -0.5px'> News Mail Subscription </span>
+					<input class='toggle-input' type='checkbox' name='show-mail' hidden checked />
+					<div class='toggle-switch'>
+						<div class='toggle-switch_inner'></div>
+					</div>
+				</div>
+				<div class='submit-btn-container' class='pt-30 d-flex'>
+					<button class='submit-btn' type='submit'>
+						Save
+					</button>
+				</div>
+			</form>
+			<form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+				<h2 class='txt-c fw-light pb-10'>Preferences</h2>
+				<div class='pb-10 pt-10 d-flex align-c justify-sb gap-20'>
+					<span style='letter-spacing: -0.5px'> Website animations </span>
+					<input id='theme' class='toggle-input' type='checkbox' name='dark-theme' hidden />
+					<div class='toggle-switch'>
+						<div class='toggle-switch_inner'></div>
+					</div>
+				</div>
+				<div class='pt-10 pb-10 border-t d-flex align-c justify-sb gap-20'>
+					<span style='letter-spacing: -0.5px'> Hide main page on enter </span>
+					<input class='toggle-input' type='checkbox' name='hide-main' hidden checked />
+					<div class='toggle-switch'>
+						<div class='toggle-switch_inner'></div>
+					</div>
+				</div>
+				<div class='pt-10 border-t d-flex align-c justify-sb gap-20'>
+					<label for='font-size' class='fs-14'>change font size : </label>
+					<select name='font-size' id='font-size' class='select-input'>
+						<option selected value='mid'>Medium (Recommended)</option>
+						<option value='min'>Minimum</option>
+						<option value='max'>Maximum</option>
+					</select>
+				</div>
+				<div class='submit-btn-container' class='pt-30 d-flex'>
+					<button class='submit-btn' type='submit'>
+						Save
+					</button>
+				</div>
+			</form>
+			<form method='POST' id='privacy-box' class='border-l rad-20 p-20 pt-10'>
+				<h2 class='txt-c fw-light pb-10'>Payment</h2>
+				<div class='pb-10 pt-10'>
+					you are paying using :
+					<span class='c-white bg-gray rad-50 pr-10 pl-10'>PayPal</span>
+				</div>
+				<div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+					<span style='letter-spacing: -0.5px'>show payment method</span>
+					<input class='toggle-input' type='checkbox' name='dark-theme' hidden />
+					<div class='toggle-switch'>
+						<div class='toggle-switch_inner'></div>
+					</div>
+				</div>
+				<div class='pb-10 pt-10 border-t d-flex align-c justify-sb gap-20'>
+					<label for='font-size' class='fs-14'>Warn me before paying</label>
+					<select name='font-size' id='font-size' class='select-input'>
+						<option selected value='payPal'>PayPal</option>
+						<option value='masterCard'>Master Card</option>
+						<option value='visa'>Visa</option>
+						<option value='aliPay'>Ali pay</option>
+					</select>
+				</div>
+				<div class='submit-btn-container' class='pt-30 d-flex'>
+					<button class='submit-btn' type='submit'>
+						Save
+					</button>
+				</div>
+				<center class='pt-10 border-t'>
+					<span class='op-min'>
+						All your banking and payment info are not secure :)
+					</span>
+				</center>
+			</form>
+		</section>
+			");
     } elseif ($selected_page == "purchases") {
       delete_movie();
       echo ("
-    <section class='page' id='purchases-page' style='width: 100%'>
-      <article id='content' class='border-l rad-20 p-20 pt-10'>
-      ");
+		<section class='page' id='purchases-page' style='width: 100%'>
+			<article id='content' class='border-l rad-20 p-20 pt-10'>
+			");
       echo ("
-        <div class='movies-boxes__header'>
-          <span style='font-size: 0.9rem'>
-        ");
+				<div class='movies-boxes__header'>
+					<span style='font-size: 0.9rem'>
+				");
       purchased_movies_nb();
       echo ("
-          purchases
-          </span>
-        </div>
-        <div id='movies_cards_container'>
-      ");
+					purchases
+					</span>
+				</div>
+				<div id='movies_cards_container'>
+			");
       get_purchased_movies();
       echo ("
-        </div>
-      </article>
-    </section>
-      ");
+				</div>
+			</article>
+		</section>
+			");
     } elseif ($selected_page == "account") {
       echo ("
-    <section class='page' id='account-page'>
-      <form name='username_form' class='account-page__form' method='POST'>
-        <label for='name_input'><h3>Change Username : </h3></label>
-        <input class='text-input' type='text' name='name' id='name_input' placeholder='New Username' />
-        <input class='text-input' type='text' name='confirm_name' id='confirm_name_input' placeholder='Confirm Username' />
-        ");
+		<section class='page' id='account-page'>
+			<form name='username_form' class='account-page__form' method='POST'>
+				<label for='name_input'><h3>Change Username : </h3></label>
+				<input class='text-input' type='text' name='name' id='name_input' placeholder='New Username' />
+				<input class='text-input' type='text' name='confirm_name' id='confirm_name_input' placeholder='Confirm Username' />
+				");
       change_username();
       echo ("
-        <button class='submit-btn' name='username_submit' type='submit'>Change</button>
-      </form>
-      <form name='email_form' class='account-page__form' method='POST'>
-        <label for='email_input'><h3>Change Email : </h3></label>
-        <input class='text-input' type='text' name='email' id='email_input' placeholder='New Email' />
-        <input class='text-input' type='text' name='confirm_email' id='confirm_email_input' placeholder='Confirm Email' />
-        ");
+				<button class='submit-btn' name='username_submit' type='submit'>Change</button>
+			</form>
+			<form name='email_form' class='account-page__form' method='POST'>
+				<label for='email_input'><h3>Change Email : </h3></label>
+				<input class='text-input' type='text' name='email' id='email_input' placeholder='New Email' />
+				<input class='text-input' type='text' name='confirm_email' id='confirm_email_input' placeholder='Confirm Email' />
+				");
       change_email();
       echo ("
-        <button class='submit-btn' name='email_submit' type='submit'>Change</button>
-      </form>
-      <form name='password_form' class='account-page__form' method='POST'>
-        <label for='password_input'><h3>Change Password : </h3></label>
-        <input class='text-input' type='text' name='password' id='password_input' placeholder='New Password' />
-        <input class='text-input' type='text' name='confirm_password' id='confirm_pwd_input' placeholder='Confirm Password' />
-        ");
+				<button class='submit-btn' name='email_submit' type='submit'>Change</button>
+			</form>
+			<form name='password_form' class='account-page__form' method='POST'>
+				<label for='password_input'><h3>Change Password : </h3></label>
+				<input class='text-input' type='text' name='password' id='password_input' placeholder='New Password' />
+				<input class='text-input' type='text' name='confirm_password' id='confirm_pwd_input' placeholder='Confirm Password' />
+				");
       change_pwd();
       echo ("
-        <button class='submit-btn' name='password_submit' type='submit'>Change</button>
-      </form>
-      <form name='log_out' class='account-page__form log_out_form' method='POST'>
-        <button class='submit-btn' name='log_out_btn' type='submit'>
-          <img width='30' src='./icons/logout.svg' alt=''>
-          <h3>Logout</h3>
-        </button>
-        <p class='important_error'>
-      ");
+				<button class='submit-btn' name='password_submit' type='submit'>Change</button>
+			</form>
+			<form name='log_out' class='account-page__form log_out_form' method='POST'>
+				<button class='submit-btn' name='log_out_btn' type='submit'>
+					<img width='30' src='./icons/logout.svg' alt=''>
+					<h3>Logout</h3>
+				</button>
+				<p class='important_error'>
+			");
       echo $logout_msg;
       echo ("
-        </p>
-      </form>
-    </section>
-      ");
+				</p>
+			</form>
+		</section>
+			");
     }
     ?>
 
   </main>
 </body>
 
+<script>
+  function clickOn(id) {
+    document.querySelector(id).click();
+  }
+</script>
+
 <?php
+
+function change_user_img()
+{
+  if (isset($_POST['user_img_submit']) && isset($_FILES['user_img'])) {
+    $img = $_FILES['user_img'];
+    $img_name = $img['name'];
+
+    if ($img['error'] != 0) {
+      echo "<p class='error'>Error while changing the image</p>";
+      return;
+    }
+
+    $allowed_ext = ['jpg', 'jpeg', 'png', 'svg', 'gif'];
+    $img_ex = strtolower(pathinfo($img_name, PATHINFO_EXTENSION));
+    if (!in_array($img_ex, $allowed_ext)) {
+      echo ("<p class='error'>this image extension is not allowed</p>");
+      return;
+    }
+
+    $img_size = $img['size'];
+    if ($img_size > 235000) {
+      echo ("<p class='error'>the size of the image is too big</p>");
+      return;
+    }
+
+    $img_temp_name = $img['tmp_name'];
+    $new_img_name = uniqid("PP-", true) . "." . $img_ex;
+
+    if (!move_uploaded_file($img_temp_name, "./profiles_pic/$new_img_name")) {
+      echo "<p>Error while changing the image</p>";
+    } elseif (isset($_SESSION['user_img'])) {
+      if (file_exists("./profiles_pic/")) {
+        unlink("./profiles_pic/$_SESSION[user_img]");
+      }
+    }
+
+    $_SESSION["user_img"] = $new_img_name;
+
+    $conn = connDb();
+    $user_id = $_SESSION["userId"];
+    $stmt = $conn->prepare("UPDATE users SET img=? WHERE id=?");
+    $stmt->bind_param("si", $new_img_name, $user_id);
+    if (!$stmt->execute()) {
+      echo "<p class='error'>Error while changing the image</p>";
+    } elseif ($stmt->affected_rows == 0) {
+      echo "<p class='error'>Error while changing the image</p>";
+    }
+    $conn->close();
+  }
+}
 
 function delete_movie()
 {
@@ -391,26 +467,26 @@ function get_purchased_movies()
       $movie_pic = $row_movie['pic'];
 
       echo ("
-    <div class='movie_card'>
-      <form name='delete_movie_form' method='POST'>
-        <div class='movie_card_header'>
-          <h4 class='movie_name'>$movie_name</h4>
-          <button type='submit' name='delete_btn' class='delete_btn'>
-            <img width='25' src='./icons/delete.svg' alt='Delete'>
-          </button>
-        </div>
-        <div class='movie_card_img_container'>
-          <img class='movie_pic' width='100%' src='$movie_pic'>
-        </div>
-        <div class='movie_card_footer'>
-          <div>$seat</div>
-          <div>$date</div>
-        </div>
-        <input type='text' style='opacity: 0; width: 0; height: 0;' name='deleted_seat' value='$seat' hidden>
-        <input type='text' style='opacity: 0; width: 0; height: 0;' name='deleted_movieId' value='$movieId' hidden>
-      </form>
-    </div>
-    ");
+		<div class='movie_card'>
+			<form name='delete_movie_form' method='POST'>
+				<div class='movie_card_header'>
+					<h4 class='movie_name'>$movie_name</h4>
+					<button type='submit' name='delete_btn' class='delete_btn'>
+						<img width='25' src='./icons/delete.svg' alt='Delete'>
+					</button>
+				</div>
+				<div class='movie_card_img_container'>
+					<img class='movie_pic' width='100%' src='$movie_pic'>
+				</div>
+				<div class='movie_card_footer'>
+					<div>$seat</div>
+					<div>$date</div>
+				</div>
+				<input type='text' style='opacity: 0; width: 0; height: 0;' name='deleted_seat' value='$seat' hidden>
+				<input type='text' style='opacity: 0; width: 0; height: 0;' name='deleted_movieId' value='$movieId' hidden>
+			</form>
+		</div>
+		");
     }
   }
   mysqli_close($conn);

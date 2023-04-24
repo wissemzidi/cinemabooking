@@ -504,9 +504,9 @@ function logout()
     if (!session_destroy()) {
       $logout_msg = "Error when logging out !";
     } else {
-      // header("Location : ../index.php");
       $logout_msg = "Successfully logged out";
-      echo "<script>window.location.href='../index.php';</script>";
+      $_SESSION["user_img"] = "";
+      header("Location : ../index.php");
     }
   }
 }
