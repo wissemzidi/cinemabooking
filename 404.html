@@ -79,13 +79,11 @@
   <style>
     #hero {
       width: 100%;
-      min-height: 100vh;
-    }
-
-    #hero h1 {
-      color: red;
+      min-height: 90vh;
+      display: grid;
+      gap: 2rem;
       text-align: center;
-      font-size: 5rem;
+      align-content: center;
     }
 
     #hero p {
@@ -98,10 +96,11 @@
       gap: 1rem;
       margin-inline: auto;
       padding: .5rem 1rem;
+      width: fit-content;
+      height: min-content;
       border-radius: 99px;
       color: white;
       background-color: red;
-      border: none;
       outline-color: transparent;
       text-decoration: none;
     }
@@ -109,11 +108,11 @@
 
   <main>
     <section id="hero">
-      <h1>404 ERROR</h1>
+      <h1 style="font-size: 4rem;"><span style="color: red;">404</span> ERROR</h1>
       <p>The page you are looking for does not exist .</p>
       <a href="./index.php" title="Home">
-        <img src="./icons/home.svg" alt="">
-        Return to home page
+        <img width="30" src="./icons/home.svg" alt="">
+        <h2>Return to home page</h2>
       </a>
     </section>
 
