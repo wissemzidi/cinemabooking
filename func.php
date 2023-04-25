@@ -55,6 +55,7 @@ function refresh_user()
     $row = $res->fetch_array();
     $_SESSION["username"] = $row["username"];
     $_SESSION["email"] = $row["email"];
+    $_SESSION["user_img"] = $row["img"];
   }
 }
 

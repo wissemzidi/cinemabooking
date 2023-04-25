@@ -62,7 +62,7 @@ header {
 #header_user_info {
   padding: 0.5rem;
   display: flex;
-  gap: 1.5rem;
+  gap: clamp(0.5rem, 1vw, 1.5rem);
   justify-content: center;
   align-items: center;
   width: fit-content;
