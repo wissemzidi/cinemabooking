@@ -465,12 +465,14 @@ function signin()
       }
       $id = $row["id"];
       $username = $row["username"];
+      $user_img = $row["img"];
 
       session_set_cookie_params(86400 * 30);
 
       $_SESSION["userId"] = $id;
       $_SESSION["username"] = $username;
       $_SESSION["email"] = $email;
+      $_SESSION["user_img"] = $user_img;
 
       header("Location: ../");
     }
