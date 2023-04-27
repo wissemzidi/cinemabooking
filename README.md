@@ -2,8 +2,11 @@
 
 ## [👀 Live-Server](http://cinemabooking.rf.gd/)
 
-
-<img src="./cinemabooking(social_preview).png" alt="">
+<div align='center'>
+  <img src="./cinemabooking(social_preview).png" alt="">
+  <img src="./preview2.png" alt="">
+  <img src="./preview3.png" alt="">
+</div>
 <img src="./preview.png" alt="">
 
 ---
