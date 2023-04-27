@@ -27,6 +27,12 @@ This project is an input validation with a styling.
 - HTML 5
 - CSS 3
 - Java Script
+- Python 3
+  ##### - Python librarys :
+  - PyQt5
+  - mysql
+  - datetime
+  - json
 
 [Back To The Top](#read-me)
 
@@ -34,12 +40,14 @@ This project is an input validation with a styling.
 
 ## How To Use
 
+#### Still in production !
+
 #### Installation <img src="https://github.com/Wissem-Zidi/icons/blob/main/settings.svg" alt="" height="25">
 
 #### API Reference <img src="https://github.com/Wissem-Zidi/icons/blob/main/api.svg" alt="" height="25">
 
 ```html
-<p>dummy code</p>
+<p>No API for now, still in production</p>
 ```
 
 [Back To The Top](#read-me)
