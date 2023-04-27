@@ -3,11 +3,18 @@
 ## [👀 Live-Server](http://cinemabooking.rf.gd/)
 
 <div align='center'>
-  <img src="./cinemabooking(social_preview).png" alt="">
-  <img src="./preview2.png" alt="">
-  <img src="./preview3.png" alt="">
+  <img src="./preview/cinemabooking(social_preview).png" alt="">
 </div>
-<img src="./preview.png" alt="">
+
+<div align='center'>
+  <img width='45%' src="./preview/preview.png" alt="">
+  <img width='45%' src="./preview/preview1.png" alt="">
+</div>
+
+<div align='center'>
+  <img width='45%' src="./preview/preview2.png" alt="">
+  <img width='45%' src="./preview/preview3.png" alt="">
+</div>
 
 ---
 
