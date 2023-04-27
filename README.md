@@ -7,8 +7,8 @@
 </div>
 
 <div align='center'>
-  <img width='45%' src="./preview/preview.png" alt="">
-  <img width='45%' src="./preview/preview1.png" alt="">
+  <img src="./preview/preview.png" alt="">
+  <img src="./preview/preview1.png" alt="">
 </div>
 
 <div align='center'>
