@@ -13,8 +13,8 @@ require "./func.php";
 
 <head>
   <meta name="keywords" content="cinema, booking, cinemabooking, series, netflix, netflixy, movies">
-  <meta name="author" content="Wissem">
-  <meta name="publisher" content="wissem">
+  <meta name="author" content="Wissem Zidi">
+  <meta name="publisher" content="Wissem Zidi">
   <meta name="copyright" content="wissemzidi 2023">
   <meta name="description" content="the best website to book your movies/cinema tickets. online ticket buying for all the major theatres and cinemas across Tunisia.">
   <meta name="page-topic" content="online movies/theatre/cinema tickets booking/buying">
