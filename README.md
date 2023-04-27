@@ -100,7 +100,7 @@ SOFTWARE.
 
 ## Author Info
 
-### Created By Wissem Zidi <img src="https://github.com/Wissem-Zidi/icons/blob/main/wissem-zidi-logo.jpg" alt="" height="25">
+### Created By Wissem Zidi <img src="https://github.com/wissemzidi/wissemzidi/blob/main/wissem-zidi-logo.jpg" alt="" height="25">
 
 - [Website <img src="https://github.com/Wissem-Zidi/icons/blob/main/home.svg" alt="" height="15">](https://wissem-zidi-ofc.netlify.com)
 - [Email <img src="https://github.com/Wissem-Zidi/icons/blob/main/Email.svg" alt="" height="15">](https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=wissem.zidi.contact@gmail.com)
