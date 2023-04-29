@@ -17,6 +17,7 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
 	color: #EEE;
+	background-color: #111;
 }
 
 #page {
@@ -25,7 +26,8 @@
 
 #title {
 	font-size: 26px;
-	color: rgba(13, 83, 170, 0.9);
+	color: rgba(13, 83, 170, 0.9);	
+	background-color: transparent;
 }
 
 #error {
@@ -34,6 +36,7 @@
 
 QLabel {
 	font-size: 20px;
+	background-color: transparent;
 }
 
 QLineEdit {
@@ -149,22 +152,6 @@ QPushButton:hover {
    </property>
    <property name="text">
     <string>Cinemabooking ADMIN</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="error">
-   <property name="geometry">
-    <rect>
-     <x>154</x>
-     <y>89</y>
-     <width>261</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

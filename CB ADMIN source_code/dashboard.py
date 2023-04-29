@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QDateTime, QDate, QTime
+from PyQt5.QtCore import QDate, QTime
 from mysql import connector as mysqli
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
@@ -10,14 +10,17 @@ import os
 
 # check if session.json file exists if not go the login page
 if not os.path.exists("session.json"):
-    os.system("login.exe")
+    os.system("python login.py")
+    # os.system("login.exe")
     sys.exit()
+
 
 # go to login if is not logged in and create the global session_id and session_access
 with open("session.json", "r") as f:
     data = f.read()
     if len(data) == 0:
-        os.system("login.exe")
+        # os.system("login.exe")
+        os.system("python login.py")
         sys.exit()
 
     data = json.loads(data)
@@ -31,7 +34,8 @@ with open("session.json", "r") as f:
     cursor.execute(sql)
     res = cursor.fetchall()
     if len(res) == 0:
-        os.system("login.exe")
+        os.system("python login.py")
+        # os.system("login.exe")
         sys.exit()
     else:
         global session_access
@@ -337,8 +341,6 @@ def nav_buttons():
     fen.editMovie_page.clicked.connect(edit_movie_page)
     fen.deleteUser_page.clicked.connect(delete_user_page)
     fen.editUser_page.clicked.connect(edit_user_page)
-    # fen.addAdmin_page.clicked.connect(add_admin_page)
-    # fen.delete_admin_page.clicked.connect(delete_admin_page)
 
 
 def initialise_new_fen(fen_name):
@@ -349,7 +351,7 @@ def initialise_new_fen(fen_name):
     fen.cancel_btn.clicked.connect(cancel)
     try:
         set_dateNow_input()
-    except:
+    except Exception:
         pass
     nav_buttons()
     fen.show()
@@ -384,34 +386,34 @@ def set_dateNow_input():
     global fen
     try:
         fen.showDate.setDateTime(datetime.datetime.now())
-    except:
+    except Exception:
         pass
 
 
 def cancel():
     try:
         fen.name.setText("")
-    except:
+    except Exception:
         pass
     try:
         fen.showDate.setText("")
-    except:
+    except Exception:
         pass
     try:
         fen.description.setText("")
-    except:
+    except Exception:
         pass
     try:
         fen.posterURL.setText("")
-    except:
+    except Exception:
         pass
     try:
         fen.seats.setText("")
-    except:
+    except Exception:
         pass
     try:
         fen.genres.setText("")
-    except:
+    except Exception:
         pass
     set_dateNow_input()
     return
@@ -421,7 +423,8 @@ def logout():
     with open("session.json", "w") as f:
         f.write("")
     fen.close()
-    os.system("login.exe")
+    os.system("python login.py")
+    # os.system("login.exe")
 
 
 def check_connection():
@@ -429,7 +432,7 @@ def check_connection():
         conn = mysqli.connect(
             host="localhost", database="cinemabooking", user="root", password=""
         )
-    except:
+    except Exception:
         fen.close()
         msg = QtWidgets.QMessageBox.critical(
             fen,

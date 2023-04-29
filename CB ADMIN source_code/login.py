@@ -22,8 +22,8 @@ def check_session():
             cursor.execute(sql)
             rows = cursor.fetchall()
             if len(rows) != 0:
-                # os.system("python dashboard.py")
-                os.system("dashboard.exe")
+                os.system("python dashboard.py")
+                # os.system("dashboard.exe")
                 sys.exit()
 
 
@@ -59,15 +59,15 @@ def login():
         conn.close()
         return
 
-    fen.error.setText("")
     cursor.close()
     conn.close()
-    fen.close()
     with open("session.json", "w") as f:
-        data = {"id": row[0], "name": row[1], "email": row[2], "access": row[4]}
+        data = {"id": row[0]}
+        print(data)
         f.write(json.dumps(data))
-    # os.system("python dashboard.py")
-    os.system("dashboard.exe")
+    fen.close()
+    os.system("python dashboard.py")
+    # os.system("dashboard.exe")
     return
 
 
@@ -79,12 +79,12 @@ def cancel():
 
 def check_connection():
     try:
-        conn = mysqli.connect(
+        mysqli.connect(
             host="localhost", database="cinemabooking", user="root", password=""
         )
-    except:
+    except Exception:
         fen.close()
-        msg = QtWidgets.QMessageBox.critical(
+        QtWidgets.QMessageBox.critical(
             fen,
             "Connection error ⚠️",
             "No connection to the Database or the Internet, please check your connection. \t",
