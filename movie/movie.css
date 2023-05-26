@@ -303,9 +303,20 @@ main {
   gap: 1rem;
 }
 
+
+.hero__right__header {
+  display: flex;
+  justify-content: space-around;
+}
+
 .hero__movieName {
   font-size: 2.5rem;
   color: #00a3ff;
+}
+
+.hero__price {
+  font-size: 1.5rem;
+  color: #00a3aa;
 }
 
 .hero__description {

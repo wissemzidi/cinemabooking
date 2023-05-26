@@ -610,6 +610,10 @@ main {
   cursor: pointer;
   transition: background-color 0.2s ease-out;
 }
+.input-container button:is(:hover, :focus-visible) {
+  background-color: red;
+}
+
 
 #page3 {
   padding-block: 5rem;
@@ -683,7 +687,7 @@ main {
   transition: all ease 0.3s;
 }
 
-.page3__movieBtn:hover {
+.page3__movieBtn:is(:hover, :focus-visible) {
   opacity: 1;
 }
 
@@ -701,16 +705,18 @@ main {
   font-size: 0.7rem;
   top: 0.5rem;
   right: 0.5em;
-  padding: 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 9999px;
 }
 
 .page3__movieStatus.available {
-  background-color: rgba(0, 200, 0, 0.8);
+  background-color: rgba(0, 200, 0, 0.75);
+  font-size: 1rem;
 }
 
 .page3__movieStatus.notAvailable {
-  background-color: rgba(255, 0, 0, 0.8);
+  background-color: rgba(255, 0, 0, 0.75);
+  font-size: 1rem;
 }
 
 .page3__genres-container {

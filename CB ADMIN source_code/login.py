@@ -1,14 +1,15 @@
 from PyQt5 import QtWidgets
 from PyQt5.uic import loadUi
 import mysql.connector as mysqli
+from subprocess import run
+from sys import exit, argv
+from os import path
 import bcrypt
 import json
-import sys
-import os
 
 
 def check_session():
-    if os.path.exists("session.json"):
+    if path.exists("session.json"):
         with open("session.json", "r") as f:
             data = f.read()
             if len(data) == 0:
@@ -22,9 +23,9 @@ def check_session():
             cursor.execute(sql)
             rows = cursor.fetchall()
             if len(rows) != 0:
-                os.system("python dashboard.py")
-                # os.system("dashboard.exe")
-                sys.exit()
+                run("python dashboard.py")
+                # run("dashboard.exe")
+                exit()
 
 
 def login():
@@ -66,8 +67,8 @@ def login():
         print(data)
         f.write(json.dumps(data))
     fen.close()
-    os.system("python dashboard.py")
-    # os.system("dashboard.exe")
+    run("python dashboard.py")
+    # run("dashboard.exe")
     return
 
 
@@ -89,7 +90,7 @@ def check_connection():
             "Connection error ⚠️",
             "No connection to the Database or the Internet, please check your connection. \t",
         )
-        sys.exit()
+        exit()
     return
 
 
@@ -97,7 +98,7 @@ def check_connection():
 
 
 check_session()
-App = QtWidgets.QApplication(sys.argv)
+App = QtWidgets.QApplication(argv)
 
 fen = loadUi("interfaces/login_interface.ui")
 

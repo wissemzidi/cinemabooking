@@ -2,6 +2,21 @@
 
 session_start();
 
+function email_auth()
+{
+  $email = "wissem.zidi.ofc@gmail.com";
+
+  $verif_code = random_int(100000, 999999);
+
+  file_put_contents("transfer.json", "
+  {
+    \"email\": \"$email\",
+    \"verif_code\": \"$verif_code\"
+  }");
+  exec("sudo python fetch.py");
+}
+email_auth();
+
 function connDb()
 {
   require "conn.php";
@@ -12,7 +27,6 @@ function connDb()
     return $conn;
   }
 }
-
 
 refresh_user();
 refresh_admin();
@@ -114,9 +128,9 @@ function getAllMovies()
         echo "<h4 class='page3__movieName'>$movieName</h4>";
         echo "<div><img class='page3__moviePic' width='100%' src='$row[pic]'></div>";
         if (strlen($row["seats"]) > 1) {
-          echo "<div class='available page3__movieStatus'></div>";
+          echo "<div class='available page3__movieStatus'>$row[price] \$</div>";
         } else {
-          echo "<div class='notAvailable page3__movieStatus'></div>";
+          echo "<div class='notAvailable page3__movieStatus'>$row[price] \$</div>";
         }
         echo ("
         <div class='page3__movieBtn-container'>
@@ -186,7 +200,14 @@ function getMovieInfo()
     ");
     echo ("
     <div class='hero__right'>
-      <h2 class='hero__movieName'>$movieName</h2>
+      <div class='hero__right__header'>
+        <h2 class='hero__movieName'>
+          $movieName
+        </h2>
+        <h3 class='hero__price'>
+          $row[price] \$
+        </h3>
+      </div>
       <p class='hero__description'> $row[description] </p>
     ");
     if (count($seats) == 0 || $seats[0] == "") {

@@ -2,26 +2,27 @@ from PyQt5.QtCore import QDate, QTime
 from mysql import connector as mysqli
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
-import datetime
+from subprocess import run
+from datetime import datetime
+from sys import exit, argv
+from os import path
 import json
-import sys
-import os
 
 
 # check if session.json file exists if not go the login page
-if not os.path.exists("session.json"):
-    os.system("python login.py")
-    # os.system("login.exe")
-    sys.exit()
+if not path.exists("session.json"):
+    run("python login.py")
+    # run("login.exe")
+    exit()
 
 
 # go to login if is not logged in and create the global session_id and session_access
 with open("session.json", "r") as f:
     data = f.read()
     if len(data) == 0:
-        # os.system("login.exe")
-        os.system("python login.py")
-        sys.exit()
+        # run("login.exe")
+        run("python login.py")
+        exit()
 
     data = json.loads(data)
     global session_id
@@ -34,9 +35,9 @@ with open("session.json", "r") as f:
     cursor.execute(sql)
     res = cursor.fetchall()
     if len(res) == 0:
-        os.system("python login.py")
-        # os.system("login.exe")
-        sys.exit()
+        run("python login.py")
+        # run("login.exe")
+        exit()
     else:
         global session_access
         session_access = res[0][4]
@@ -383,9 +384,8 @@ def edit_user_page():
 
 
 def set_dateNow_input():
-    global fen
     try:
-        fen.showDate.setDateTime(datetime.datetime.now())
+        fen.showDate.setDateTime(datetime.now())
     except Exception:
         pass
 
@@ -423,8 +423,8 @@ def logout():
     with open("session.json", "w") as f:
         f.write("")
     fen.close()
-    os.system("python login.py")
-    # os.system("login.exe")
+    run("python login.py")
+    # run("login.exe")
 
 
 def check_connection():
@@ -439,16 +439,17 @@ def check_connection():
             "Connection error ⚠️",
             "No connection to the Database or the Internet, please check your connection. \t",
         )
-        sys.exit()
+        exit()
     return
 
 
 # ************************* Main Program *************************
 
 
-App = QtWidgets.QApplication(sys.argv)
+App = QtWidgets.QApplication(argv)
 
 # loading main page dashboard.ui
+global fen
 fen = loadUi("interfaces/dashboard.ui")
 
 # checking the connection
