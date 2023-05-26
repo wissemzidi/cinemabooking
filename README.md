@@ -30,7 +30,32 @@
 
 ## Description
 
-This project is an input validation with a styling.
+### CinemaBooking is a comprehensive movie ticket booking website that brings convenience and efficiency to the movie-going experience. With a seamless integration of PHP, JavaScript, Python, PyQt5, HTML5, CSS, and Qt Designer, CinemaBooking offers a user-friendly interface and robust features for both users and administrators. ###
+
+### Features: ###
+
+1. User-friendly Booking System: The website provides a simple and intuitive interface for users to browse movies, select showtimes, and reserve tickets effortlessly. With real-time availability updates and seat selection, CinemaBooking ensures a seamless booking process.
+
+2. Secure Payment Integration: Users can securely make online payments using popular payment gateways, providing a hassle-free and secure transaction experience.
+
+3. Dynamic Movie Listings: CinemaBooking offers a dynamic movie listing feature, allowing administrators to easily manage and update movie information such as title, synopsis, genre, and duration. This ensures users always have access to the latest movie offerings.
+
+4. Showtime Management: Administrators can efficiently manage showtimes for different movies, enabling easy scheduling and coordination with theater operations. This ensures accurate and up-to-date showtime information for users.
+
+5. Ticket Pricing and Promotion: Customize ticket prices based on factors such as movie type, seat category, and showtime. Additionally, administrators can create and manage promotional offers, such as discounts and combo deals, to attract more customers.
+
+6. Administration Panel: The integrated administration panel empowers cinema administrators with comprehensive control over the website. From managing user accounts and movie listings to handling bookings and generating reports, the panel offers a centralized hub for efficient management.
+
+7. Responsive Design: CinemaBooking is built with HTML5, CSS, and responsive design principles, ensuring seamless user experiences across various devices, including desktops, tablets, and mobile phones.
+
+8. Visual Customization: With Qt Designer and CSS, administrators can easily customize the website's appearance, branding, and layout to match their cinema's unique style and identity.
+
+CinemaBooking aims to revolutionize the movie ticket booking process, providing a user-friendly platform for both moviegoers and cinema administrators. We continuously strive to enhance the website's features and user experience. Your feedback and contributions are highly appreciated.
+
+To get started, please refer to the documentation included in the repository, which provides detailed instructions on installation, configuration, and usage.
+Join us in transforming the movie ticket booking experience with CinemaBooking!
+
+* The CinemaBooking Team
 
 #### Technologies <img src="https://github.com/Wissem-Zidi/icons/blob/main/technologies.svg" alt="🛠️" height="20">
 
@@ -50,9 +75,12 @@ This project is an input validation with a styling.
 
 ## How To Use
 
-#### Still in production !
-
 #### Installation <img src="https://github.com/Wissem-Zidi/icons/blob/main/settings.svg" alt="" height="25">
+
+1. download the latest release windows executable and source code from the release tab
+2. deploy the source code on your server with mysql and apache in it
+3. execute the sql file in your database
+4. enjoy !
 
 #### API Reference <img src="https://github.com/Wissem-Zidi/icons/blob/main/api.svg" alt="" height="25">
 
