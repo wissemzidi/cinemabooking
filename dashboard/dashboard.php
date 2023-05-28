@@ -1,5 +1,6 @@
 <?php
 require "../func.php";
+logout();
 if (!isset($_SESSION["userId"])) header("Location: ../index.php");
 // handling the selected page id
 if (isset($_GET["p"])) {
@@ -20,7 +21,6 @@ if (isset($_GET["p"])) {
 } else {
   $selected_page = "settings";
 }
-logout();
 $error_msg = "";
 $logout_msg = "";
 ?>

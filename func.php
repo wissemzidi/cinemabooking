@@ -464,7 +464,6 @@ function signup()
 
 function signin()
 {
-
   if (isset($_SESSION["userId"])) {
     header("Location: ../dashboard/dashboard.php");
   } elseif (isset($_POST["reg"])) {
@@ -481,27 +480,48 @@ function signin()
     $res = $stmt->get_result();
     if ($res->num_rows == 0) {
       error_msg("No account with this email.");
+      $conn->close();
+      return;
     } else {
       $row = $res->fetch_array();
-      if (!password_verify($password, $res->fetch_array()["pwd"])) {
-        echo "Wrong password";
+      if (!password_verify($password, $row["password"])) {
+        error_msg("Wrong password");
+        $conn->close();
+        return;
       }
       $id = $row["id"];
-      $username = $row["username"];
-      $user_img = $row["img"];
-
-      session_set_cookie_params(86400 * 30);
-
-      $_SESSION["userId"] = $id;
-      $_SESSION["username"] = $username;
-      $_SESSION["email"] = $email;
-      $_SESSION["user_img"] = $user_img;
-
-      header("Location: ../");
+      header("Location: ../emailAuth?id=$id");
     }
     $conn->close();
   }
 }
+
+
+function init_session($id)
+{
+  $conn = connDb();
+  $stmt = $conn->prepare("SELECT * FROM users WHERE id=? ;");
+  $stmt->bind_param("s", $id);
+  if (!$stmt->execute()) {
+    error_msg("Error while executing the query");
+    $conn->close();
+    return;
+  }
+  $row = $stmt->get_result()->fetch_array();
+  $email = $row["email"];
+  $username = $row["username"];
+  $user_img = $row["img"];
+
+  session_set_cookie_params(86400 * 30);
+
+  $_SESSION["userId"] = $id;
+  $_SESSION["username"] = $username;
+  $_SESSION["email"] = $email;
+  $_SESSION["user_img"] = $user_img;
+
+  // header("Location: ../");
+}
+
 
 function purchased_movies_nb()
 {
@@ -529,9 +549,8 @@ function logout()
     if (!session_destroy()) {
       $logout_msg = "Error when logging out !";
     } else {
-      $logout_msg = "Successfully logged out";
-      $_SESSION["user_img"] = "";
-      header("Location : ../index.php");
+      // $_SESSION["user_img"] = "";
+      header("Location : ../");
     }
   }
 }
