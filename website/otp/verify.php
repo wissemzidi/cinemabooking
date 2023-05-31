@@ -9,6 +9,13 @@ if (!isset($_GET["id"])) {
   $id = $_GET["id"];
   global $id;
 }
+$next_page = null;
+if (isset($_GET["next"])) {
+  $next_page = $_GET["next"];
+} elseif (isset($_POST["next"])) {
+  $next_page = $_POST["next"];
+}
+global $next_page;
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +111,7 @@ if ($otp_token == "") {
       </div>
     </form>
     <div style="margin-top: 4rem;">
-      <a href="../emailAuth?id=<?= $id ?>" style="text-decoration: none;">Use other method</a>
+      <a href="../emailAuth?id=<?= $id ?>&next=<?= $next_page ?>" style="text-decoration: none;">Use other method</a>
       <br>
       <p style="opacity: 0.5;">You will find the code in your authentification app</p>
     </div>
