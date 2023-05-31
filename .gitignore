@@ -1,0 +1,3 @@
+./website/vendor
+./website/conn.php
+./website/emailAuth/smtp_conn.php

@@ -1,0 +1,19 @@
+{
+    "name": "wissem/cinemabooking",
+    "autoload": {
+        "psr-4": {
+            "Wissem\\Cinemabooking\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Wissem",
+            "email": "wissem.zidi.ofc@gmail.com"
+        }
+    ],
+    "require": {
+        "chillerlan/php-qrcode": "^4.3",
+        "pragmarx/google2fa": "^8.0",
+        "phpmailer/phpmailer": "^6.8"
+    }
+}

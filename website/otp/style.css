@@ -1,0 +1,91 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+main {
+  min-height: 70vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.generate_main {
+  gap: 2rem;
+}
+
+.main_title {
+  padding-bottom: 1rem;
+}
+
+.inputs_container {
+  margin-inline: auto;
+}
+
+.main_form {
+  display: grid;
+  gap: 2rem;
+}
+
+#show_token {
+  margin-inline: auto;
+}
+
+#secret_token {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.text_input {
+  min-width: 27ch;
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: ease-out outline-color 0.2s;
+  letter-spacing: 3ch;
+}
+.text_input:where(:focus-visible, :hover) {
+  outline-color: rgba(0, 128, 255, 0.5);
+}
+
+.form_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.submit_btn {
+  width: fit-content;
+  padding: 0.45rem 0.9rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 50px;
+  background-color: rgba(143, 82, 160, 0.9);
+  color: white;
+  cursor: pointer;
+  transition: 0.25s ease-out background-color, 0.25s ease-out padding-inline;
+}
+.submit_btn:where(:focus-visible, :hover) {
+  background-color: rgba(255, 0, 0, 0.5);
+  padding-inline: 1.45rem;
+}
+
+.result {
+  text-align: center;
+}
+
+.failure {
+  color: red;
+}
